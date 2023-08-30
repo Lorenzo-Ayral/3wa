@@ -1,7 +1,7 @@
 import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import {useDispatch, useSelector} from "react-redux";
-import {increment} from "../redux/reducers/counterReducer.jsx";
+import {decrement, increment} from "../redux/reducers/counterReducer.jsx";
 
 export const HomePage = () => {
     // const [count, setCount] = useState(0)
@@ -22,6 +22,9 @@ export const HomePage = () => {
             <div className="card">
                 <button onClick={() => dispatch(increment())}>
                     count is {count}
+                </button>
+                <button onClick={() => dispatch(decrement())}>
+                    decremente
                 </button>
                 <p>
                     Edit <code>src/App.jsx</code> and save to test HMR

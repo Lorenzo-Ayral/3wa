@@ -1,25 +1,27 @@
 import {Link} from 'react-router-dom';
-import Burger from "./Burger/Burger.jsx";
-import Menu from "./Menu/Menu.jsx";
+import Burger from "./Burger/Burger";
+import Menu from "./Menu/Menu";
+import {useState} from "react";
 
 function Header() {
+    const [open, setOpen] = useState(false);
     return (
         <header>
-            <nav>
-                <Burger/>
-                <Menu/>
-                <ul>
-                    <li>
-                        <Link to="/">Accueil</Link>
-                    </li>
-                    <li>
-                        <Link to="/about">À propos</Link>
-                    </li>
-                    <li>
-                        <Link to="/contact">Contact</Link>
-                    </li>
-                </ul>
-            </nav>
+            <div>
+                <Burger open={open} setOpen={setOpen}/>
+                <Menu open={open} setOpen={setOpen}/>
+            </div>
+            <ul>
+                <li>
+                    <Link to="/">Accueil</Link>
+                </li>
+                <li>
+                    <Link to="/about">À propos</Link>
+                </li>
+                <li>
+                    <Link to="/contact">Contact</Link>
+                </li>
+            </ul>
         </header>
     );
 }

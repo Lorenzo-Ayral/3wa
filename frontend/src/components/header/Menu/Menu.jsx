@@ -1,8 +1,10 @@
 import style from './Menu.module.scss';
 
-const Menu = () => {
+const Menu = ({ open }) => {
+    const menuClassName = open ? style.openMenu : style.menu;
+
     return (
-        <div className={style}>
+        <div className={menuClassName}>
             <nav>
                 <a href="/">
                     <span role="img" aria-label="about us">&#x1f481;&#x1f3fb;&#x200d;&#x2642;&#xfe0f;</span>
@@ -20,4 +22,5 @@ const Menu = () => {
         </div>
     )
 }
+
 export default Menu;
