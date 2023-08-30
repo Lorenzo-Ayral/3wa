@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
+import styles from "./Burger.module.scss"
 
-function BurgerMenu() {
+function Burger() {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -9,7 +10,7 @@ function BurgerMenu() {
     };
 
     return (
-        <div className={`burger-menu ${isOpen ? 'open' : ''}`}>
+        <div className={styles.burger}>
             <FaBars className="menu-icon" onClick={toggleMenu} />
             {isOpen && (
                 <ul className="menu-items">
@@ -28,4 +29,4 @@ function BurgerMenu() {
     );
 }
 
-export default BurgerMenu;
+export default Burger;

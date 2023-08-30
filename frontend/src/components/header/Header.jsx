@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom';
-import BurgerMenu from "./BurgerMenu";
-import "./header.scss"
+import {Link} from 'react-router-dom';
+import Burger from "./Burger/Burger.jsx";
+import Menu from "./Menu/Menu.jsx";
 
 function Header() {
     return (
         <header>
             <nav>
-                <BurgerMenu />
+                <Burger/>
+                <Menu/>
                 <ul>
                     <li>
                         <Link to="/">Accueil</Link>
