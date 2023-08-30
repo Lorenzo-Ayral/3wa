@@ -56,6 +56,15 @@ services:
     networks:
       - app
 
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - "1030:1030" # smtp server
+      - "8025:8025" # web ui
+
 networks:
   app:
     driver: bridge
