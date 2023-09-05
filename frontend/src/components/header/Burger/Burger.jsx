@@ -1,5 +1,5 @@
 import { FaBars } from 'react-icons/fa';
-import styles from "./Burger.module.scss"
+import styles from "../../../css/components/header/Burger/Burger.module.css"
 
 function Burger({open, setOpen}) {
     const toggleMenu = () => {

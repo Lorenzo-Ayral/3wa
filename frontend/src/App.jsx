@@ -1,11 +1,11 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import './App.scss'
+import '../src/css/App.css';
 import {HomePage} from './pages/HomePage';
-import Header from "./components/header/Header.jsx";
+import Header from "./components/header/Header";
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import { Provider } from 'react-redux';
-import store from "./redux/store.jsx";
+import store from "./redux/store";
 
 function App() {
 

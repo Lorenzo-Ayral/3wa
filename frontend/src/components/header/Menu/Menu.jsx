@@ -1,4 +1,4 @@
-import style from './Menu.module.scss';
+import style from '../../../css/components/header/Menu/Menu.module.css';
 
 const Menu = ({ open }) => {
     const menuClassName = open ? style.openMenu : style.menu;
