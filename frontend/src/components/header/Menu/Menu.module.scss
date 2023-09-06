@@ -1,48 +1,48 @@
-@import '../../../variables';
-
-.menu {
-  transform: translateX(-100%);
-}
-
-.openMenu {
-  transform: translateX(0);
-}
-
-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: $primaryLight;
-  height: 100vh;
-  text-align: left;
-  padding: 2rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(-100%);
-
-  @media (max-width: $mobile) {
-  width: 100%;
-}
-
-  a {
-    font-size: 2rem;
-    text-transform: uppercase;
-    padding: 2rem 0;
-    font-weight: bold;
-    letter-spacing: 0.5rem;
-    color: $primaryDark;
-    text-decoration: none;
-    transition: color 0.3s linear;
-
-    @media (max-width: $mobile) {
-    font-size: 1.5rem;
-    text-align: center;
-  }
-
-    &:hover {
-      color: $primaryHover;
-    }
-  }
-}
+//@import '../../../variables';
+//
+//.menu {
+//  transform: translateX(-100%);
+//}
+//
+//.openMenu {
+//  transform: translateX(0);
+//}
+//
+//nav {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  background: $primaryLight;
+//  height: 100vh;
+//  text-align: left;
+//  padding: 2rem;
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  transition: transform 0.3s ease-in-out;
+//  transform: translateX(-100%);
+//
+//  @media (max-width: $mobile) {
+//  width: 100%;
+//}
+//
+//  a {
+//    font-size: 2rem;
+//    text-transform: uppercase;
+//    padding: 2rem 0;
+//    font-weight: bold;
+//    letter-spacing: 0.5rem;
+//    color: $primaryDark;
+//    text-decoration: none;
+//    transition: color 0.3s linear;
+//
+//    @media (max-width: $mobile) {
+//    font-size: 1.5rem;
+//    text-align: center;
+//  }
+//
+//    &:hover {
+//      color: $primaryHover;
+//    }
+//  }
+//}

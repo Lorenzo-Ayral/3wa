@@ -76,7 +76,7 @@ services:
     networks:
       - app
     depends_on:
-      - frontend # Make sure SASS compilation runs after the frontend container starts
+      - frontend
 
 networks:
   app:
