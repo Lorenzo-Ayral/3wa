@@ -17,7 +17,7 @@ class Post
     private ?int $id = null;
 
     #[ORM\OneToMany(mappedBy: 'id_post', targetEntity: User::class)]
-    private Collection $id_user;
+    private Collection $user;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
@@ -31,13 +31,13 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_post', targetEntity: Comment::class)]
-    private Collection $id_comments;
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
+    private Collection $comments;
 
     public function __construct()
     {
-        $this->id_user = new ArrayCollection();
-        $this->id_comments = new ArrayCollection();
+        $this->user = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,16 +48,16 @@ class Post
     /**
      * @return Collection<int, User>
      */
-    public function getIdUser(): Collection
+    public function getUser(): Collection
     {
-        return $this->id_user;
+        return $this->user;
     }
 
     public function addIdUser(User $idUser): static
     {
-        if (!$this->id_user->contains($idUser)) {
-            $this->id_user->add($idUser);
-            $idUser->setIdPosts($this);
+        if (!$this->user->contains($idUser)) {
+            $this->user->add($idUser);
+            $idUser->setPosts($this);
         }
 
         return $this;
@@ -65,10 +65,10 @@ class Post
 
     public function removeIdUser(User $idUser): static
     {
-        if ($this->id_user->removeElement($idUser)) {
+        if ($this->user->removeElement($idUser)) {
             // set the owning side to null (unless already changed)
-            if ($idUser->getIdPosts() === $this) {
-                $idUser->setIdPosts(null);
+            if ($idUser->getPosts() === $this) {
+                $idUser->setPosts(null);
             }
         }
 
@@ -126,16 +126,16 @@ class Post
     /**
      * @return Collection<int, Comment>
      */
-    public function getIdComments(): Collection
+    public function getComments(): Collection
     {
-        return $this->id_comments;
+        return $this->comments;
     }
 
     public function addIdComment(Comment $idComment): static
     {
-        if (!$this->id_comments->contains($idComment)) {
-            $this->id_comments->add($idComment);
-            $idComment->setIdPost($this);
+        if (!$this->comments->contains($idComment)) {
+            $this->comments->add($idComment);
+            $idComment->setPost($this);
         }
 
         return $this;
@@ -143,10 +143,10 @@ class Post
 
     public function removeIdComment(Comment $idComment): static
     {
-        if ($this->id_comments->removeElement($idComment)) {
+        if ($this->comments->removeElement($idComment)) {
             // set the owning side to null (unless already changed)
-            if ($idComment->getIdPost() === $this) {
-                $idComment->setIdPost(null);
+            if ($idComment->getPost() === $this) {
+                $idComment->setPost(null);
             }
         }
 

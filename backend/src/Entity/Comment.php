@@ -15,10 +15,10 @@ class Comment
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_comments')]
-    private ?User $id_user = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_comments')]
-    private ?Post $id_post = null;
+    private ?Post $post = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
@@ -34,26 +34,26 @@ class Comment
         return $this->id;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->id_user;
+        return $this->user;
     }
 
-    public function setIdUser(?User $id_user): static
+    public function setUser(?User $user): static
     {
-        $this->id_user = $id_user;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getIdPost(): ?Post
+    public function getPost(): ?Post
     {
-        return $this->id_post;
+        return $this->post;
     }
 
-    public function setIdPost(?Post $id_post): static
+    public function setPost(?Post $post): static
     {
-        $this->id_post = $id_post;
+        $this->post = $post;
 
         return $this;
     }

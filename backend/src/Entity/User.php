@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource()]
 class User
 {
     #[ORM\Id]
@@ -44,18 +46,18 @@ class User
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_user')]
-    private ?Post $id_posts = null;
+    private ?Post $posts = null;
 
     #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Comment::class)]
-    private Collection $id_comments;
+    private Collection $comments;
 
     #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Notification::class)]
-    private Collection $id_notifications;
+    private Collection $notifications;
 
     public function __construct()
     {
-        $this->id_comments = new ArrayCollection();
-        $this->id_notifications = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -171,14 +173,14 @@ class User
         return $this;
     }
 
-    public function getIdPosts(): ?Post
+    public function getPosts(): ?Post
     {
-        return $this->id_posts;
+        return $this->posts;
     }
 
-    public function setIdPosts(?Post $id_posts): static
+    public function setPosts(?Post $posts): static
     {
-        $this->id_posts = $id_posts;
+        $this->posts = $posts;
 
         return $this;
     }
@@ -186,16 +188,16 @@ class User
     /**
      * @return Collection<int, Comment>
      */
-    public function getIdComments(): Collection
+    public function getComments(): Collection
     {
-        return $this->id_comments;
+        return $this->comments;
     }
 
     public function addIdComment(Comment $idComment): static
     {
-        if (!$this->id_comments->contains($idComment)) {
-            $this->id_comments->add($idComment);
-            $idComment->setIdUser($this);
+        if (!$this->comments->contains($idComment)) {
+            $this->comments->add($idComment);
+            $idComment->setUser($this);
         }
 
         return $this;
@@ -203,10 +205,10 @@ class User
 
     public function removeIdComment(Comment $idComment): static
     {
-        if ($this->id_comments->removeElement($idComment)) {
+        if ($this->comments->removeElement($idComment)) {
             // set the owning side to null (unless already changed)
-            if ($idComment->getIdUser() === $this) {
-                $idComment->setIdUser(null);
+            if ($idComment->getUser() === $this) {
+                $idComment->setUser(null);
             }
         }
 
@@ -216,16 +218,16 @@ class User
     /**
      * @return Collection<int, Notification>
      */
-    public function getIdNotifications(): Collection
+    public function getNotifications(): Collection
     {
-        return $this->id_notifications;
+        return $this->notifications;
     }
 
     public function addIdNotification(Notification $idNotification): static
     {
-        if (!$this->id_notifications->contains($idNotification)) {
-            $this->id_notifications->add($idNotification);
-            $idNotification->setIdUser($this);
+        if (!$this->notifications->contains($idNotification)) {
+            $this->notifications->add($idNotification);
+            $idNotification->setUser($this);
         }
 
         return $this;
@@ -233,10 +235,10 @@ class User
 
     public function removeIdNotification(Notification $idNotification): static
     {
-        if ($this->id_notifications->removeElement($idNotification)) {
+        if ($this->notifications->removeElement($idNotification)) {
             // set the owning side to null (unless already changed)
-            if ($idNotification->getIdUser() === $this) {
-                $idNotification->setIdUser(null);
+            if ($idNotification->getUser() === $this) {
+                $idNotification->setUser(null);
             }
         }
 

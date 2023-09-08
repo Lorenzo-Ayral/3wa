@@ -14,10 +14,10 @@ class Friendship
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $id_user1 = null;
+    private ?User $user1 = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $id_user2 = null;
+    private ?User $user2 = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -33,26 +33,26 @@ class Friendship
         return $this->id;
     }
 
-    public function getIdUser1(): ?User
+    public function getUser1(): ?User
     {
-        return $this->id_user1;
+        return $this->user1;
     }
 
-    public function setIdUser1(?User $id_user1): static
+    public function setUser1(?User $user1): static
     {
-        $this->id_user1 = $id_user1;
+        $this->user1 = $user1;
 
         return $this;
     }
 
-    public function getIdUser2(): ?User
+    public function getUser2(): ?User
     {
-        return $this->id_user2;
+        return $this->user2;
     }
 
-    public function setIdUser2(?User $id_user2): static
+    public function setUser2(?User $user2): static
     {
-        $this->id_user2 = $id_user2;
+        $this->user2 = $user2;
 
         return $this;
     }
