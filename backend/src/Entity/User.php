@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +9,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
 class User
 {
     #[ORM\Id]
@@ -22,49 +20,42 @@ class User
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $first_name = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $last_name = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $salt = null;
+    private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $hashed = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_of_birth = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profile_picture = null;
 
     #[ORM\Column]
-    private ?bool $cgu = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $first_name = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $last_name = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $address = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $phone = null;
-
-    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: PurchaseHistory::class)]
-    private Collection $purchaseHistories;
+    #[ORM\ManyToOne(inversedBy: 'id_user')]
+    private ?Post $id_posts = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Order::class)]
-    private Collection $orders;
+    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Comment::class)]
+    private Collection $id_comments;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Review::class)]
-    private Collection $reviews;
+    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Notification::class)]
+    private Collection $id_notifications;
 
     public function __construct()
     {
-        $this->purchaseHistories = new ArrayCollection();
-        $this->orders = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
+        $this->id_comments = new ArrayCollection();
+        $this->id_notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +75,30 @@ class User
         return $this;
     }
 
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): static
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): static
+    {
+        $this->last_name = $last_name;
+
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -96,86 +111,38 @@ class User
         return $this;
     }
 
-    public function getSalt(): ?string
+    public function getPassword(): ?string
     {
-        return $this->salt;
+        return $this->password;
     }
 
-    public function setSalt(string $salt): static
+    public function setPassword(string $password): static
     {
-        $this->salt = $salt;
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getHashed(): ?string
+    public function getDateOfBirth(): ?\DateTimeInterface
     {
-        return $this->hashed;
+        return $this->date_of_birth;
     }
 
-    public function setHashed(string $hashed): static
+    public function setDateOfBirth(\DateTimeInterface $date_of_birth): static
     {
-        $this->hashed = $hashed;
+        $this->date_of_birth = $date_of_birth;
 
         return $this;
     }
 
-    public function isCgu(): ?bool
+    public function getProfilePicture(): ?string
     {
-        return $this->cgu;
+        return $this->profile_picture;
     }
 
-    public function setCgu(bool $cgu): static
+    public function setProfilePicture(?string $profile_picture): static
     {
-        $this->cgu = $cgu;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->first_name;
-    }
-
-    public function setFirstName(?string $first_name): static
-    {
-        $this->first_name = $first_name;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->last_name;
-    }
-
-    public function setLastName(?string $last_name): static
-    {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): static
-    {
-        $this->phone = $phone;
+        $this->profile_picture = $profile_picture;
 
         return $this;
     }
@@ -185,7 +152,7 @@ class User
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -197,37 +164,49 @@ class User
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, PurchaseHistory>
-     */
-    public function getPurchaseHistories(): Collection
+    public function getIdPosts(): ?Post
     {
-        return $this->purchaseHistories;
+        return $this->id_posts;
     }
 
-    public function addPurchaseHistory(PurchaseHistory $purchaseHistory): static
+    public function setIdPosts(?Post $id_posts): static
     {
-        if (!$this->purchaseHistories->contains($purchaseHistory)) {
-            $this->purchaseHistories->add($purchaseHistory);
-            $purchaseHistory->setUserId($this);
+        $this->id_posts = $id_posts;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getIdComments(): Collection
+    {
+        return $this->id_comments;
+    }
+
+    public function addIdComment(Comment $idComment): static
+    {
+        if (!$this->id_comments->contains($idComment)) {
+            $this->id_comments->add($idComment);
+            $idComment->setIdUser($this);
         }
 
         return $this;
     }
 
-    public function removePurchaseHistory(PurchaseHistory $purchaseHistory): static
+    public function removeIdComment(Comment $idComment): static
     {
-        if ($this->purchaseHistories->removeElement($purchaseHistory)) {
+        if ($this->id_comments->removeElement($idComment)) {
             // set the owning side to null (unless already changed)
-            if ($purchaseHistory->getUserId() === $this) {
-                $purchaseHistory->setUserId(null);
+            if ($idComment->getIdUser() === $this) {
+                $idComment->setIdUser(null);
             }
         }
 
@@ -235,59 +214,29 @@ class User
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, Notification>
      */
-    public function getOrders(): Collection
+    public function getIdNotifications(): Collection
     {
-        return $this->orders;
+        return $this->id_notifications;
     }
 
-    public function addOrder(Order $order): static
+    public function addIdNotification(Notification $idNotification): static
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setUserId($this);
+        if (!$this->id_notifications->contains($idNotification)) {
+            $this->id_notifications->add($idNotification);
+            $idNotification->setIdUser($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): static
+    public function removeIdNotification(Notification $idNotification): static
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->id_notifications->removeElement($idNotification)) {
             // set the owning side to null (unless already changed)
-            if ($order->getUserId() === $this) {
-                $order->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Review>
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
-    public function addReview(Review $review): static
-    {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews->add($review);
-            $review->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReview(Review $review): static
-    {
-        if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
-            if ($review->getUserId() === $this) {
-                $review->setUserId(null);
+            if ($idNotification->getIdUser() === $this) {
+                $idNotification->setIdUser(null);
             }
         }
 
