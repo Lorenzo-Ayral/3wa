@@ -3,6 +3,9 @@ export DOCKER_COMPOSE=docker-compose
 run: ## Launch docker-compose stack
 	$(DOCKER_COMPOSE) up --remove-orphans -d
 
+install: ## Install all dependencies
+	$(DOCKER_COMPOSE) build
+
 stop: ## Stop the Docker containers
 	$(DOCKER_COMPOSE) stop
 

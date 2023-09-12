@@ -65,6 +65,19 @@ services:
       - "1030:1030" # smtp server
       - "8025:8025" # web ui
 
+  sass-compiler: # New service for SASS compilation
+    container_name: sass-compiler
+    image: mpsorg/sass-compiler
+    volumes:
+      - ./frontend/src:/app/src/frontend # Mount the frontend/src directory
+      - ./frontend/src/css:/css # Mount the CSS output directory
+    command: [ "sass", "--watch", "/app/src/frontend:/css", "--style", "compressed" ] # Watch the frontend/src directory
+    working_dir: /app/src/frontend # Set the working directory
+    networks:
+      - app
+    depends_on:
+      - frontend
+
 networks:
   app:
     driver: bridge
