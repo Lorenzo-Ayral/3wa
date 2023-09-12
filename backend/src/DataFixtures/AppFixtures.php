@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Comment;
+use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -26,6 +28,13 @@ class AppFixtures extends Fixture
             $post->setAuthor($user);
             $post->setCreatedAt(new \DateTimeImmutable('now'));
             $manager->persist($post);
+
+            $comment = new Comment();
+            $comment->setContent('Comment ' . $i);
+            $comment->setUser($user);
+            $comment->setPost($post);
+            $comment->setCreatedAt(new \DateTimeImmutable('now'));
+            $manager->persist($comment);
         }
         // $product = new Product();
         // $manager->persist($product);
