@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FriendshipRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FriendshipRepository::class)]
+#[ApiResource]
 class Friendship
 {
     #[ORM\Id]
@@ -13,10 +15,12 @@ class Friendship
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'friendship1', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user1 = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'friendship2', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user2 = null;
 
     #[ORM\Column(length: 255)]
@@ -38,7 +42,7 @@ class Friendship
         return $this->user1;
     }
 
-    public function setUser1(?User $user1): static
+    public function setUser1(User $user1): static
     {
         $this->user1 = $user1;
 
@@ -50,7 +54,7 @@ class Friendship
         return $this->user2;
     }
 
-    public function setUser2(?User $user2): static
+    public function setUser2(User $user2): static
     {
         $this->user2 = $user2;
 

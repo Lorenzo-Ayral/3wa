@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource()]
+#[ApiResource]
 class User
 {
     #[ORM\Id]
@@ -45,17 +45,24 @@ class User
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_user')]
-    private ?Post $posts = null;
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, orphanRemoval: true)]
+    private Collection $posts;
 
-    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
+
+    #[ORM\OneToOne(mappedBy: 'user1', cascade: ['persist', 'remove'])]
+    private ?Friendship $friendship1 = null;
+
+    #[ORM\OneToOne(mappedBy: 'user2', cascade: ['persist', 'remove'])]
+    private ?Friendship $friendship2 = null;
 
     public function __construct()
     {
+        $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
     }
@@ -173,14 +180,32 @@ class User
         return $this;
     }
 
-    public function getPosts(): ?Post
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
     {
         return $this->posts;
     }
 
-    public function setPosts(?Post $posts): static
+    public function addPost(Post $post): static
     {
-        $this->posts = $posts;
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getAuthor() === $this) {
+                $post->setAuthor(null);
+            }
+        }
 
         return $this;
     }
@@ -193,22 +218,22 @@ class User
         return $this->comments;
     }
 
-    public function addIdComment(Comment $idComment): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->comments->contains($idComment)) {
-            $this->comments->add($idComment);
-            $idComment->setUser($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeIdComment(Comment $idComment): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->comments->removeElement($idComment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($idComment->getUser() === $this) {
-                $idComment->setUser(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 
@@ -223,24 +248,58 @@ class User
         return $this->notifications;
     }
 
-    public function addIdNotification(Notification $idNotification): static
+    public function addNotification(Notification $notification): static
     {
-        if (!$this->notifications->contains($idNotification)) {
-            $this->notifications->add($idNotification);
-            $idNotification->setUser($this);
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeIdNotification(Notification $idNotification): static
+    public function removeNotification(Notification $notification): static
     {
-        if ($this->notifications->removeElement($idNotification)) {
+        if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
-            if ($idNotification->getUser() === $this) {
-                $idNotification->setUser(null);
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFriendship1(): ?Friendship
+    {
+        return $this->friendship1;
+    }
+
+    public function setFriendship1(Friendship $friendship1): static
+    {
+        // set the owning side of the relation if necessary
+        if ($friendship1->getUser1() !== $this) {
+            $friendship1->setUser1($this);
+        }
+
+        $this->friendship1 = $friendship1;
+
+        return $this;
+    }
+
+    public function getFriendship2(): ?Friendship
+    {
+        return $this->friendship2;
+    }
+
+    public function setFriendship2(Friendship $friendship2): static
+    {
+        // set the owning side of the relation if necessary
+        if ($friendship2->getUser1() !== $this) {
+            $friendship2->setUser1($this);
+        }
+
+        $this->friendship2 = $friendship2;
 
         return $this;
     }

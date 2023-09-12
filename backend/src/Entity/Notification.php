@@ -14,7 +14,8 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_notifications')]
+    #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(type: Types::TEXT)]

@@ -15,36 +15,37 @@ class Admin
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $id_user = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     #[ORM\Column]
-    private ?bool $isAdmin = null;
+    private ?bool $is_admin = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->id_user;
+        return $this->user;
     }
 
-    public function setIdUser(?User $id_user): static
+    public function setUser(User $user): static
     {
-        $this->id_user = $id_user;
+        $this->user = $user;
 
         return $this;
     }
 
     public function isIsAdmin(): ?bool
     {
-        return $this->isAdmin;
+        return $this->is_admin;
     }
 
-    public function setIsAdmin(bool $isAdmin): static
+    public function setIsAdmin(bool $is_admin): static
     {
-        $this->isAdmin = $isAdmin;
+        $this->is_admin = $is_admin;
 
         return $this;
     }

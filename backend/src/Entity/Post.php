@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ApiResource]
 class Post
 {
     #[ORM\Id]
@@ -16,14 +18,12 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_post', targetEntity: User::class)]
-    private Collection $user;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $picture = null;
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -36,7 +36,6 @@ class Post
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -45,56 +44,26 @@ class Post
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addIdUser(User $idUser): static
-    {
-        if (!$this->user->contains($idUser)) {
-            $this->user->add($idUser);
-            $idUser->setPosts($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdUser(User $idUser): static
-    {
-        if ($this->user->removeElement($idUser)) {
-            // set the owning side to null (unless already changed)
-            if ($idUser->getPosts() === $this) {
-                $idUser->setPosts(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent(?string $content): static
+    public function setContent(string $content): static
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getAuthor(): ?User
     {
-        return $this->picture;
+        return $this->author;
     }
 
-    public function setPicture(?string $picture): static
+    public function setAuthor(?User $author): static
     {
-        $this->picture = $picture;
+        $this->author = $author;
 
         return $this;
     }
@@ -131,22 +100,22 @@ class Post
         return $this->comments;
     }
 
-    public function addIdComment(Comment $idComment): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->comments->contains($idComment)) {
-            $this->comments->add($idComment);
-            $idComment->setPost($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPost($this);
         }
 
         return $this;
     }
 
-    public function removeIdComment(Comment $idComment): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->comments->removeElement($idComment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($idComment->getPost() === $this) {
-                $idComment->setPost(null);
+            if ($comment->getPost() === $this) {
+                $comment->setPost(null);
             }
         }
 

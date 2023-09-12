@@ -20,6 +20,12 @@ class AppFixtures extends Fixture
             $user->setDateOfBirth(new \DateTimeImmutable('now'));
             $user->setCreatedAt(new \DateTimeImmutable('now'));
             $manager->persist($user);
+
+            $post = new Post();
+            $post->setContent('Content ' . $i);
+            $post->setAuthor($user);
+            $post->setCreatedAt(new \DateTimeImmutable('now'));
+            $manager->persist($post);
         }
         // $product = new Product();
         // $manager->persist($product);
