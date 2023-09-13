@@ -11,39 +11,44 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+)]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("Default")]
+    #[Groups('read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("Default")]
+    #[Groups(['read', 'write'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("Default")]
+    #[Groups(['read', 'write'])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("Default")]
+    #[Groups(['read', 'write'])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("Default")]
+    #[Groups(['read', 'write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("Default")]
+    #[Groups(['read', 'write'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['read', 'write'])]
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read', 'write'])]
     private ?string $profile_picture = null;
 
     #[ORM\Column]
@@ -68,7 +73,7 @@ class User
     private Collection $receiver;
 
     #[ORM\Column]
-    private array $role = [];
+    private ?array $role = null;
 
     public function __construct()
     {
