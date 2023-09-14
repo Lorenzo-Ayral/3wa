@@ -1,8 +1,8 @@
 import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import {useDispatch, useSelector} from "react-redux";
-import {decrement, increment} from "../redux/reducers/counterReducer.jsx";
-import UserList from "../components/UserList/UserList.jsx";
+import {decrement, increment} from "../redux/reducers/counterReducer";
+import UserList from "../components/UserList/UserList";
 
 export const HomePage = () => {
     // const [count, setCount] = useState(0)
