@@ -8,14 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
 )]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -73,7 +75,7 @@ class User
     private Collection $receiver;
 
     #[ORM\Column]
-    private ?array $role = null;
+    private ?array $roles = null;
 
     public function __construct()
     {
@@ -87,7 +89,7 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
@@ -142,7 +144,7 @@ class User
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_ARGON2ID);
 
         return $this;
     }
@@ -285,7 +287,7 @@ class User
         return $this;
     }
 
-    public function getSender(): ?Friendship
+    public function getSender(): Collection
     {
         return $this->sender;
     }
@@ -319,15 +321,20 @@ class User
         return $this;
     }
 
-    public function getRole(): array
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(array $role): static
+    public function setRoles(array $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
+    }
+
+    public function eraseCredentials()
+    {
+        // Vous pouvez laisser cette méthode vide
     }
 }

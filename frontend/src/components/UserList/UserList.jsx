@@ -3,7 +3,7 @@ import {getUsers} from "../../api/api.js";
 
 function UserList() {
     const [users, setUsers] = useState([]);
-    
+
     useEffect(() => {
         getUsers()
             .then((response) => {
@@ -21,9 +21,9 @@ function UserList() {
                 {users && users.map((user) => (
                     <li key={user.id}>
                         <strong>Nom d'utilisateur :</strong> {user.username}
-                        <br />
+                        <br/>
                         <strong>Nom complet :</strong> {user.first_name} {user.last_name}
-                        <br />
+                        <br/>
                         <strong>Email :</strong> {user.email}
                     </li>
                 ))}

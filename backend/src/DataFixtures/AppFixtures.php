@@ -17,7 +17,8 @@ class AppFixtures extends Fixture
             $user->setFirstName('First name ' . $i);
             $user->setLastName('Last name ' . $i);
             $user->setEmail('email' . $i . '@gmail.com');
-            $user->setPassword('password' . $i);
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword('Password' . $i);
             $user->setUsername('username' . $i);
             $user->setDateOfBirth(new \DateTimeImmutable('now'));
             $user->setCreatedAt(new \DateTimeImmutable('now'));
