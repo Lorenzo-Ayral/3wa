@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,7 +16,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read']],
+    normalizationContext: ['groups' => ['read:User']],
     denormalizationContext: ['groups' => ['write']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -22,35 +24,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('read')]
+    #[Groups('read:User')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['read:User', 'write'])]
     private ?string $profile_picture = null;
 
     #[ORM\Column]

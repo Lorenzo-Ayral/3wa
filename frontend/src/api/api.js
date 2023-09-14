@@ -4,6 +4,15 @@ const api = axios.create({
     baseURL: 'http://localhost:8000/api/',
 });
 
+export const authenticate = (credentials) => {
+    return api.post('login', credentials)
+        .then((response) => response.data.token)
+        .catch((error) => {
+            console.error('Erreur lors de l\'authentification :', error);
+            throw error;
+        });
+};
+
 export const getUsers = () => {
     return api.get('users')
         .then((response) => response.data['hydra:member'])
