@@ -2,41 +2,57 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
-class User
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:User']],
+    denormalizationContext: ['groups' => ['write']],
+)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('read:User')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['read:User', 'write'])]
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:User', 'write'])]
     private ?string $profile_picture = null;
 
     #[ORM\Column]
@@ -54,11 +70,14 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
-    #[ORM\OneToOne(mappedBy: 'user1', cascade: ['persist', 'remove'])]
-    private ?Friendship $friendship1 = null;
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Friendship::class, orphanRemoval: true)]
+    private Collection $sender;
 
-    #[ORM\OneToOne(mappedBy: 'user2', cascade: ['persist', 'remove'])]
-    private ?Friendship $friendship2 = null;
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Friendship::class, orphanRemoval: true)]
+    private Collection $receiver;
+
+    #[ORM\Column]
+    private ?array $roles = null;
 
     public function __construct()
     {
@@ -72,7 +91,7 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
@@ -127,7 +146,7 @@ class User
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_ARGON2ID);
 
         return $this;
     }
@@ -270,37 +289,54 @@ class User
         return $this;
     }
 
-    public function getFriendship1(): ?Friendship
+    public function getSender(): Collection
     {
-        return $this->friendship1;
+        return $this->sender;
     }
 
-    public function setFriendship1(Friendship $friendship1): static
+    public function setSender(Friendship $sender): static
     {
         // set the owning side of the relation if necessary
-        if ($friendship1->getUser1() !== $this) {
-            $friendship1->setUser1($this);
+        if ($sender->getSender() !== $this) {
+            $sender->setSender($this);
         }
 
-        $this->friendship1 = $friendship1;
+        $this->sender = $sender;
 
         return $this;
     }
 
-    public function getFriendship2(): ?Friendship
+    public function getReceiver(): ?Friendship
     {
-        return $this->friendship2;
+        return $this->receiver;
     }
 
-    public function setFriendship2(Friendship $friendship2): static
+    public function setReceiver(Friendship $receiver): static
     {
         // set the owning side of the relation if necessary
-        if ($friendship2->getUser1() !== $this) {
-            $friendship2->setUser1($this);
+        if ($receiver->getSender() !== $this) {
+            $receiver->setSender($this);
         }
 
-        $this->friendship2 = $friendship2;
+        $this->receiver = $receiver;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials()
+    {
+        // Vous pouvez laisser cette méthode vide
     }
 }

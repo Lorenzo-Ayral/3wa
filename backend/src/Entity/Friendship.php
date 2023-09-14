@@ -15,13 +15,13 @@ class Friendship
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'friendship1', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'sender')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user1 = null;
+    private ?User $sender = null;
 
-    #[ORM\OneToOne(inversedBy: 'friendship2', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'receiver')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user2 = null;
+    private ?User $receiver = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -37,26 +37,26 @@ class Friendship
         return $this->id;
     }
 
-    public function getUser1(): ?User
+    public function getSender(): ?User
     {
-        return $this->user1;
+        return $this->sender;
     }
 
-    public function setUser1(User $user1): static
+    public function setSender(User $sender): static
     {
-        $this->user1 = $user1;
+        $this->sender = $sender;
 
         return $this;
     }
 
-    public function getUser2(): ?User
+    public function getReceiver(): ?User
     {
-        return $this->user2;
+        return $this->receiver;
     }
 
-    public function setUser2(User $user2): static
+    public function setReceiver(User $receiver): static
     {
-        $this->user2 = $user2;
+        $this->receiver = $receiver;
 
         return $this;
     }
