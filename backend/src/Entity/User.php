@@ -2,69 +2,88 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
-class User
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:User']],
+    denormalizationContext: ['groups' => ['write']],
+)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('read:User')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
+    private ?string $first_name = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
+    private ?string $last_name = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:User', 'write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $salt = null;
+    #[Groups(['read:User', 'write'])]
+    private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $hashed = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['read:User', 'write'])]
+    private ?\DateTimeInterface $date_of_birth = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:User', 'write'])]
+    private ?string $profile_picture = null;
 
     #[ORM\Column]
-    private ?bool $cgu = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $first_name = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $last_name = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $address = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $phone = null;
-
-    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: PurchaseHistory::class)]
-    private Collection $purchaseHistories;
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, orphanRemoval: true)]
+    private Collection $posts;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Order::class)]
-    private Collection $orders;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Review::class)]
-    private Collection $reviews;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Friendship::class, orphanRemoval: true)]
+    private Collection $sender;
+
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Friendship::class, orphanRemoval: true)]
+    private Collection $receiver;
+
+    #[ORM\Column]
+    private ?array $roles = null;
 
     public function __construct()
     {
-        $this->purchaseHistories = new ArrayCollection();
-        $this->orders = new ArrayCollection();
-        $this->reviews = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,7 +91,7 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
@@ -80,6 +99,30 @@ class User
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): static
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): static
+    {
+        $this->last_name = $last_name;
 
         return $this;
     }
@@ -96,86 +139,38 @@ class User
         return $this;
     }
 
-    public function getSalt(): ?string
+    public function getPassword(): ?string
     {
-        return $this->salt;
+        return $this->password;
     }
 
-    public function setSalt(string $salt): static
+    public function setPassword(string $password): static
     {
-        $this->salt = $salt;
+        $this->password = password_hash($password, PASSWORD_ARGON2ID);
 
         return $this;
     }
 
-    public function getHashed(): ?string
+    public function getDateOfBirth(): ?\DateTimeInterface
     {
-        return $this->hashed;
+        return $this->date_of_birth;
     }
 
-    public function setHashed(string $hashed): static
+    public function setDateOfBirth(\DateTimeInterface $date_of_birth): static
     {
-        $this->hashed = $hashed;
+        $this->date_of_birth = $date_of_birth;
 
         return $this;
     }
 
-    public function isCgu(): ?bool
+    public function getProfilePicture(): ?string
     {
-        return $this->cgu;
+        return $this->profile_picture;
     }
 
-    public function setCgu(bool $cgu): static
+    public function setProfilePicture(?string $profile_picture): static
     {
-        $this->cgu = $cgu;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->first_name;
-    }
-
-    public function setFirstName(?string $first_name): static
-    {
-        $this->first_name = $first_name;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->last_name;
-    }
-
-    public function setLastName(?string $last_name): static
-    {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): static
-    {
-        $this->phone = $phone;
+        $this->profile_picture = $profile_picture;
 
         return $this;
     }
@@ -185,7 +180,7 @@ class User
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -197,7 +192,7 @@ class User
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
 
@@ -205,29 +200,29 @@ class User
     }
 
     /**
-     * @return Collection<int, PurchaseHistory>
+     * @return Collection<int, Post>
      */
-    public function getPurchaseHistories(): Collection
+    public function getPosts(): Collection
     {
-        return $this->purchaseHistories;
+        return $this->posts;
     }
 
-    public function addPurchaseHistory(PurchaseHistory $purchaseHistory): static
+    public function addPost(Post $post): static
     {
-        if (!$this->purchaseHistories->contains($purchaseHistory)) {
-            $this->purchaseHistories->add($purchaseHistory);
-            $purchaseHistory->setUserId($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removePurchaseHistory(PurchaseHistory $purchaseHistory): static
+    public function removePost(Post $post): static
     {
-        if ($this->purchaseHistories->removeElement($purchaseHistory)) {
+        if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($purchaseHistory->getUserId() === $this) {
-                $purchaseHistory->setUserId(null);
+            if ($post->getAuthor() === $this) {
+                $post->setAuthor(null);
             }
         }
 
@@ -235,29 +230,29 @@ class User
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, Comment>
      */
-    public function getOrders(): Collection
+    public function getComments(): Collection
     {
-        return $this->orders;
+        return $this->comments;
     }
 
-    public function addOrder(Order $order): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setUserId($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($order->getUserId() === $this) {
-                $order->setUserId(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 
@@ -265,32 +260,83 @@ class User
     }
 
     /**
-     * @return Collection<int, Review>
+     * @return Collection<int, Notification>
      */
-    public function getReviews(): Collection
+    public function getNotifications(): Collection
     {
-        return $this->reviews;
+        return $this->notifications;
     }
 
-    public function addReview(Review $review): static
+    public function addNotification(Notification $notification): static
     {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews->add($review);
-            $review->setUserId($this);
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeReview(Review $review): static
+    public function removeNotification(Notification $notification): static
     {
-        if ($this->reviews->removeElement($review)) {
+        if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
-            if ($review->getUserId() === $this) {
-                $review->setUserId(null);
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function getSender(): Collection
+    {
+        return $this->sender;
+    }
+
+    public function setSender(Friendship $sender): static
+    {
+        // set the owning side of the relation if necessary
+        if ($sender->getSender() !== $this) {
+            $sender->setSender($this);
+        }
+
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getReceiver(): ?Friendship
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver(Friendship $receiver): static
+    {
+        // set the owning side of the relation if necessary
+        if ($receiver->getSender() !== $this) {
+            $receiver->setSender($this);
+        }
+
+        $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials()
+    {
+        // Vous pouvez laisser cette méthode vide
     }
 }

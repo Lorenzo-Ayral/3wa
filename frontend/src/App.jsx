@@ -6,6 +6,8 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import { Provider } from 'react-redux';
 import store from "./redux/store";
+import LoginForm from "./components/Login/LoginForm";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
 
@@ -17,6 +19,8 @@ function App() {
                     <Route exact path="/" element={<HomePage/>}/>
                     <Route path="/about" element={<AboutPage/>} />
                     <Route path="/contact" element={<ContactPage/>} />
+                    <Route path="/login" element={<LoginForm/>} />
+                    <Route path="/profil" component={<ProfilePage/>} />
                 </Routes>
             </BrowserRouter>
         </Provider>
