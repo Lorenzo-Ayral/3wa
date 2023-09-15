@@ -19,6 +19,17 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+        
+    acme_api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+#    app.event_subscriber.jwt_created_listener:
+#        class: App\EventListener\JwtCreatedListener
+#        tags:
+#            - { name: 'kernel.event_listener' }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
