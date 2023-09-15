@@ -8,7 +8,7 @@ api_platform:
 #        api_keys:
 #            JWT:
 #                name: Authorization
-#                type: header
+#                type: Header
 #    mapping:
 #        paths: ['%kernel.project_dir%/src/Entity']
 #    defaults:

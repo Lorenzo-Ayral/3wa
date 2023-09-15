@@ -1,6 +1,8 @@
 import {useState} from 'react';
-// import {Redirect} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import {authenticate} from "../../api/api.js";
+import { useDispatch } from 'react-redux';
+import {loginSuccess} from "../../redux/auth/authSlice.js";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +11,7 @@ const LoginForm = () => {
     });
     const [errors, setErrors] = useState({});
     const [redirectToProfile, setRedirectToProfile] = useState(false);
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -27,8 +30,8 @@ const LoginForm = () => {
             };
             const token = await authenticate(credentials);
             localStorage.setItem('jwtToken', token);
+            dispatch(loginSuccess())
             setRedirectToProfile(true);
-            console.log(localStorage);
         } catch (error) {
             console.error('Erreur lors de la connexion :', error);
         }
@@ -61,7 +64,7 @@ const LoginForm = () => {
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
-            {/*{redirectToProfile && <Redirect to="/profil"></Redirect>}*/}
+            {redirectToProfile && <Navigate to="/profil"/>}
         </>
     );
 };
