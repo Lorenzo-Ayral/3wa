@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import {getProfile} from "../api/api.js";
 
 const ProfilePage = () => {
+    const { userId } = useParams();
+    console.log(userId)
     const [userData, setUserData] = useState({});
+    console.log(userData);
 
     useEffect(() => {
-        const jwtToken = localStorage.getItem('jwtToken');
-
-        fetch('/api/user', {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        })
-            .then((response) => response.json())
+        getProfile(userId) //
             .then((data) => setUserData(data))
             .catch((error) => console.error('Erreur lors de la récupération des données :', error));
-    }, []);
+    }, [userId]);
 
     return (
         <div>
@@ -23,7 +20,6 @@ const ProfilePage = () => {
             <p>Nom d'utilisateur : {userData.username}</p>
             <p>Prénom : {userData.first_name}</p>
             <p>Nom : {userData.last_name}</p>
-            {/* Affichez d'autres informations de l'utilisateur ici */}
         </div>
     );
 };

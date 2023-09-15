@@ -4,7 +4,6 @@ const api = axios.create({
     baseURL: 'http://localhost:8000/api/',
 });
 
-// Ajouter un intercepteur à l'instance Axios pour inclure le token d'autorisation s'il existe
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('jwtToken');
@@ -25,6 +24,16 @@ export const authenticate = (credentials) => {
             console.error('Erreur lors de l\'authentification :', error);
             throw error;
         });
+};
+
+export const getProfile = async (userId) => {
+    try {
+        const response = await api.get(`users/${userId}`) ;
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données de l\'utilisateur :', error);
+        throw error;
+    }
 };
 
 export const getUsers = () => {
