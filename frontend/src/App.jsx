@@ -1,18 +1,17 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import '../src/css/App.css';
 import {HomePage} from './pages/HomePage';
-import Header from "./components/header/Header";
+import Header from "./components/Header/Header";
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import { Provider } from 'react-redux';
-import store from "./redux/store";
 import LoginForm from "./components/Login/LoginForm";
 import ProfilePage from "./pages/ProfilePage";
+import { useSelector } from 'react-redux';
 
 function App() {
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     return (
-        <Provider store={store}>
             <BrowserRouter>
                 <Header/>
                 <Routes>
@@ -20,10 +19,9 @@ function App() {
                     <Route path="/about" element={<AboutPage/>} />
                     <Route path="/contact" element={<ContactPage/>} />
                     <Route path="/login" element={<LoginForm/>} />
-                    <Route path="/profil" component={<ProfilePage/>} />
+                    <Route path="/profil" element={isAuthenticated ? <ProfilePage/> : <Navigate to="/login"/>} />
                 </Routes>
             </BrowserRouter>
-        </Provider>
     )
 }
 

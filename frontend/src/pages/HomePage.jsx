@@ -2,7 +2,8 @@ import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {decrement, increment} from "../redux/reducers/counterReducer";
-import UserList from "../components/UserList/UserList";
+import PostList from "../components/PostList/PostList.jsx";
+import UserList from "../components/UserList/UserList.jsx";
 
 export const HomePage = () => {
     // const [count, setCount] = useState(0)
@@ -35,6 +36,7 @@ export const HomePage = () => {
                 Click on the Vite and React logos to learn more
             </p>
             <UserList/>
+            <PostList/>
         </>
     )
 }
