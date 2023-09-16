@@ -26,7 +26,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
-#    app.event_subscriber.jwt_created_listener:
+    App\Controller\UserController:
+        tags: [ 'controller.service_arguments' ]
+
+
+    #    app.event_subscriber.jwt_created_listener:
 #        class: App\EventListener\JwtCreatedListener
 #        tags:
 #            - { name: 'kernel.event_listener' }
