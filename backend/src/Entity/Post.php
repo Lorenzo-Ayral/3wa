@@ -34,6 +34,9 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $online = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -118,6 +121,18 @@ class Post
                 $comment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isOnline(): ?bool
+    {
+        return $this->online;
+    }
+
+    public function setOnline(bool $online): static
+    {
+        $this->online = $online;
 
         return $this;
     }

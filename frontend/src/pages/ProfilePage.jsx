@@ -19,8 +19,8 @@ const ProfilePage = () => {
         <div>
             <h2>Profil de l'utilisateur</h2>
             <p>Nom d'utilisateur : {userData.username}</p>
-            <p>Prénom : {userData.first_name}</p>
-            <p>Nom : {userData.last_name}</p>
+            <p>Prénom : {userData.firstName}</p>
+            <p>Nom : {userData.lastName}</p>
             <p>Email : {userData.email}</p>
         </div>
     );

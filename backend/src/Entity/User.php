@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use App\Controller\UserController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +18,26 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(
+            controller: UserController::class,
+            read: true,
+        ),
+        new GetCollection(),
+
+//        'get' => [
+//            'security' => 'is_granted("ROLE_USER")',
+//            'security_message' => 'Vous devez être connecté pour accéder à cette ressource.',
+//        ],
+//        'put' => [
+//            'security' => 'is_granted("ROLE_USER") and object == user',
+//            'security_message' => 'Vous ne pouvez modifier que votre propre profil.',
+//        ],
+//        'delete' => [
+//            'security' => 'is_granted("ROLE_ADMIN")',
+//            'security_message' => 'Vous devez être administrateur pour accéder à cette ressource.',
+//        ],
+    ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
 )]
@@ -89,7 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUserIdentifier(): string
+    public function getUsername(): string
     {
         return $this->username;
     }
