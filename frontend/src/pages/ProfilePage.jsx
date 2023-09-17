@@ -4,7 +4,6 @@ import jwt_decode from "jwt-decode";
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({});
-    console.log(userData)
     const token = localStorage.getItem('jwtToken');
     const decodedToken = jwt_decode(token);
     const userId = decodedToken.userId;
@@ -18,6 +17,7 @@ const ProfilePage = () => {
     return (
         <div>
             <h2>Profil de l'utilisateur</h2>
+            <p>Photo de profil : {userData.profilePicture}</p>
             <p>Nom d'utilisateur : {userData.username}</p>
             <p>Prénom : {userData.firstName}</p>
             <p>Nom : {userData.lastName}</p>

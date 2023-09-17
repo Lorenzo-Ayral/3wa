@@ -11,7 +11,7 @@ auth:
 
 app_user_by_id:
     path: api/users/{id}
-    controller: 'App\Controller\UserController::showProfile'
+    controller: App\Controller\UserController::showProfile
     methods: ['GET']
 #    defaults:
 #        _api_resource_class: 'App\Entity\User'

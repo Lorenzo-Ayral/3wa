@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
@@ -25,7 +26,7 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
@@ -34,12 +35,13 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
     private Collection $comments;
 
-    #[ORM\Column(options: ['default' => false])]
-    private ?bool $online = null;
+//    #[ORM\Column(options: ['default' => false])]
+//    private ?bool $online = null;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->created_at = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -125,15 +127,15 @@ class Post
         return $this;
     }
 
-    public function isOnline(): ?bool
-    {
-        return $this->online;
-    }
-
-    public function setOnline(bool $online): static
-    {
-        $this->online = $online;
-
-        return $this;
-    }
+//    public function isOnline(): ?bool
+//    {
+//        return $this->online;
+//    }
+//
+//    public function setOnline(bool $online): static
+//    {
+//        $this->online = $online;
+//
+//        return $this;
+//    }
 }
