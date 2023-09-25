@@ -59,9 +59,21 @@ export const getPosts = () => {
         });
 };
 
+export const getUserPosts = () => {
+
+    const url = 'posts?author=' + jwt_decode(localStorage.getItem('jwtToken')).userId;
+
+    return api.get(url)
+        .then((response) => response.data['hydra:member'])
+        .catch((error) => {
+            console.error('Erreur lors de la récupération des posts :', error);
+            throw error;
+        });
+};
+
+
 export const createPost = async (content) => {
     const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
-    console.log('authorId :', authorId)
     try {
         const response = await api.post(
             'posts',
