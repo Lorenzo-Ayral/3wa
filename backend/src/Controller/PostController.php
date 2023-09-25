@@ -22,10 +22,13 @@ class PostController extends AbstractController
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
+        $content = $data['content'];
+        $authorId = $data['author'];
+
 
         $post = new Post();
-        $post->setAuthor($data['author']);
-        $post->setContent($data['content']);
+        $post->setAuthor($authorId);
+        $post->setContent($content);
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();

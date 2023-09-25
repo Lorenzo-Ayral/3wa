@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const api = axios.create({
     baseURL: 'http://localhost:8000/api/',
@@ -58,6 +59,18 @@ export const getPosts = () => {
         });
 };
 
-export const createPost = (postData) => {
-    return api.post('posts', postData);
+export const createPost = async (content) => {
+    const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
+    console.log('authorId :', authorId)
+    try {
+        const response = await api.post(
+            'posts',
+            { content, author: authorId },
+        );
+        console.log('Post créé avec succès :', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors de la création du post :', error);
+        throw error;
+    }
 };

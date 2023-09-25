@@ -35,7 +35,7 @@ class UserController extends AbstractController
         ];
 
         $jsonResponse = $this->serializer->serialize($userData, 'json', [
-            'groups' => ['read'], // Vous pouvez spécifier les groupes de sérialisation ici
+            'groups' => ['read'], 
         ]);
 
         return new Response($jsonResponse, 200, [

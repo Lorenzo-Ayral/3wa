@@ -54,7 +54,8 @@ security:
 
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
-    - { path: ^/api/posts,   roles: PUBLIC_ACCESS }
+#    - { path: ^/api/posts,   roles: PUBLIC_ACCESS }
+    - { path: ^/api/posts,   roles: IS_AUTHENTICATED_FULLY }
 #    - { path: ^/api/users/\d+, roles: IS_AUTHENTICATED_FULLY }
 #    - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 #  access_control:
