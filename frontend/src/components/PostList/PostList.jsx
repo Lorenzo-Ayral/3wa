@@ -20,7 +20,7 @@ function PostList() {
             <ul>
                 {posts && posts.map((post) => (
                     <li key={post.id}>
-                        <strong>Créé par</strong> {post.author}
+                        <strong>Créé par</strong> {post.authorUsername}
                         <br/>
                         <strong>Contenu</strong> {post.content}
                         <br/>

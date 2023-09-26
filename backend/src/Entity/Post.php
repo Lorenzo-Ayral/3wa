@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
@@ -37,9 +38,6 @@ class Post
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
     private Collection $comments;
-
-//    #[ORM\Column(options: ['default' => false])]
-//    private ?bool $online = null;
 
     public function __construct()
     {
@@ -76,6 +74,11 @@ class Post
         return $this;
     }
 
+    public function getAuthorUsername(): ?string
+    {
+        return $this->author->getUsername();
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
@@ -100,9 +103,7 @@ class Post
         return $this;
     }
 
-    /**
-     * @return Collection<int, Comment>
-     */
+
     public function getComments(): Collection
     {
         return $this->comments;
@@ -129,16 +130,4 @@ class Post
 
         return $this;
     }
-
-//    public function isOnline(): ?bool
-//    {
-//        return $this->online;
-//    }
-//
-//    public function setOnline(bool $online): static
-//    {
-//        $this->online = $online;
-//
-//        return $this;
-//    }
 }

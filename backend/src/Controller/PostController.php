@@ -35,4 +35,23 @@ class PostController extends AbstractController
 
         return $this->json($post, Response::HTTP_CREATED);
     }
+
+    #[Route('/api/posts', name: 'get_posts', methods: ['GET'])]
+    public function index(): Response
+    {
+        $posts = $this->entityManager->getRepository(Post::class)->findAll();
+
+        $postsData = [];
+        foreach ($posts as $post) {
+            $postData = [
+                'id' => $post->getId(),
+                'content' => $post->getContent(),
+                'author' => $post->getAuthor()->getUsername(),
+                'created_at' => $post->getCreatedAt(),
+            ];
+            $postsData[] = $postData;
+        }
+
+        return $this->json($postsData);
+    }
 }
