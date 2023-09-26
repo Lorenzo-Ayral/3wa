@@ -60,9 +60,7 @@ export const getPosts = () => {
 };
 
 export const getUserPosts = () => {
-
     const url = 'posts?author=' + jwt_decode(localStorage.getItem('jwtToken')).userId;
-
     return api.get(url)
         .then((response) => response.data['hydra:member'])
         .catch((error) => {
@@ -70,6 +68,14 @@ export const getUserPosts = () => {
             throw error;
         });
 };
+
+export const deleteUserPost = (postId) => {
+    return api.delete('posts/' + postId)
+    .catch((error) => {
+        console.error('Erreur lors de la suppression du post :', error);
+        throw error;
+    });
+}
 
 
 export const createPost = async (content) => {
