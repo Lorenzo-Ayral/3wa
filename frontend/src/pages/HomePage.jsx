@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {decrement, increment} from "../redux/reducers/counterReducer";
 import PostList from "../components/PostList/PostList.jsx";
 import UserList from "../components/UserList/UserList.jsx";
+import PostForm from "../components/PostForm/PostForm.jsx";
 
 export const HomePage = () => {
     // const [count, setCount] = useState(0)
@@ -35,6 +36,7 @@ export const HomePage = () => {
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
             </p>
+            <PostForm/>
             <UserList/>
             <PostList/>
         </>

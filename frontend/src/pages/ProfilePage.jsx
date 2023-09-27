@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { getProfile } from "../api/api.js";
+import {useEffect, useState} from 'react';
+import {getProfile} from "../api/api.js";
 import jwt_decode from "jwt-decode";
+import UserPosts from "../components/UserPosts/UserPosts.jsx";
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({});
-    console.log(userData)
     const token = localStorage.getItem('jwtToken');
     const decodedToken = jwt_decode(token);
     const userId = decodedToken.userId;
@@ -16,13 +16,17 @@ const ProfilePage = () => {
     }, [userId]);
 
     return (
-        <div>
-            <h2>Profil de l'utilisateur</h2>
-            <p>Nom d'utilisateur : {userData.username}</p>
-            <p>Prénom : {userData.first_name}</p>
-            <p>Nom : {userData.last_name}</p>
-            <p>Email : {userData.email}</p>
-        </div>
+        <>
+            <div>
+                <h2>Profil de l'utilisateur</h2>
+                <p>Photo de profil : {userData.profilePicture}</p>
+                <p>Nom d'utilisateur : {userData.username}</p>
+                <p>Prénom : {userData.firstName}</p>
+                <p>Nom : {userData.lastName}</p>
+                <p>Email : {userData.email}</p>
+            </div>
+            <UserPosts/>
+        </>
     );
 };
 

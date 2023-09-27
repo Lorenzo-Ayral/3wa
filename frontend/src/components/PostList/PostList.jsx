@@ -14,13 +14,17 @@ function PostList() {
             });
     }, []);
 
+    console.log(posts)
+
     return (
         <div>
             <h2>Liste des posts</h2>
             <ul>
                 {posts && posts.map((post) => (
                     <li key={post.id}>
-                        <strong>Créé par</strong> {post.author}
+                        <strong>Créé par</strong> {post.authorUsername}
+                        <br/>
+                        <strong>Image</strong> {post.picture}
                         <br/>
                         <strong>Contenu</strong> {post.content}
                         <br/>
