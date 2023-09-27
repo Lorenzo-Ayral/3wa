@@ -24,15 +24,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: true,
         ),
         new GetCollection(),
-
-//        'get' => [
-//            'security' => 'is_granted("ROLE_USER")',
-//            'security_message' => 'Vous devez être connecté pour accéder à cette ressource.',
-//        ],
-//        'put' => [
-//            'security' => 'is_granted("ROLE_USER") and object == user',
-//            'security_message' => 'Vous ne pouvez modifier que votre propre profil.',
-//        ],
 //        'delete' => [
 //            'security' => 'is_granted("ROLE_ADMIN")',
 //            'security_message' => 'Vous devez être administrateur pour accéder à cette ressource.',
