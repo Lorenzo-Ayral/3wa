@@ -16,8 +16,6 @@ function CreateUserForm() {
         const dateOfBirth = Moment(birthDate).format('DD/MM/YYYY');
         const data = {username, email, firstName, lastName, dateOfBirth, password};
 
-        console.log(dateOfBirth)
-
         if (password !== confirmPassword) {
             alert('Les mots de passe ne correspondent pas !');
             return;

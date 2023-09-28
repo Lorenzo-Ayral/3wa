@@ -27,6 +27,15 @@ export const authenticate = (credentials) => {
         });
 };
 
+export const logout = () => {
+    localStorage.removeItem('jwtToken');
+    return api.post('logout')
+        .catch((error) => {
+            console.error('Erreur lors de la déconnexion :', error);
+            throw error;
+        });
+}
+
 export const getProfile = async (userId) => {
     try {
         const response = await api.get(`users/${userId}`) ;
