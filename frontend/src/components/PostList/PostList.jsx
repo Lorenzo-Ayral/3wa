@@ -14,8 +14,6 @@ function PostList() {
             });
     }, []);
 
-    console.log(posts)
-
     return (
         <div>
             <h2>Liste des posts</h2>

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {createUser} from "../../api/api.js";
 import Moment from 'moment';
+import {Navigate} from "react-router-dom";
 
 function CreateUserForm() {
     const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ function CreateUserForm() {
     const [birthDate, setBirthDate] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -22,8 +24,8 @@ function CreateUserForm() {
         }
 
         try {
-            const response = await createUser(data);
-            console.log(response.data);
+            await createUser(data);
+            setRedirectToLogin(true);
         } catch (error) {
             console.error('Erreur lors de la création de l\'utilisateur:', error);
         }
@@ -60,6 +62,7 @@ function CreateUserForm() {
                 <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
             </label>
             <input type="submit" value="Créer un utilisateur"/>
+            {redirectToLogin && <Navigate to="/login"/>}
         </form>
     );
 }

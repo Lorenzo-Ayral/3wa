@@ -29,7 +29,7 @@ security:
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
     api:
-      pattern:   ^/api
+      pattern: ^/api
       stateless: true
       jwt: ~
 
@@ -41,22 +41,24 @@ security:
       # form_login: true
       # https://symfony.com/doc/current/security/impersonating_user.html
       # switch_user: true
-#    main:
-#      stateless: true
-#      provider: users
-#      json_login:
-#        check_path: api_login
-#        username_path: username
-#        password_path: password
-#        success_handler: lexik_jwt_authentication.handler.authentication_success
-#        failure_handler: lexik_jwt_authentication.handler.authentication_failure
-#      jwt: ~
+  #    main:
+  #      stateless: true
+  #      provider: users
+  #      json_login:
+  #        check_path: api_login
+  #        username_path: username
+  #        password_path: password
+  #        success_handler: lexik_jwt_authentication.handler.authentication_success
+  #        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+  #      jwt: ~
 
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
-#    - { path: ^/api/posts,   roles: PUBLIC_ACCESS }
-    - { path: ^/api/posts,   roles: IS_AUTHENTICATED_FULLY }
-#    - { path: ^/api/users/\d+, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/posts,   roles: PUBLIC_ACCESS }
+    - { path: ^/api/users/\d+$, roles: [ROLE_USER, ROLE_ADMIN] }
+    - { path: ^/api/users, roles: ROLE_ADMIN }
+#    - { path: ^/api/users, roles: ROLE_ADMIN }
+#    - { path: ^/api/users/{id}, role: ROLE_USER }
 #    - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 #  access_control:
 #      - { path: ^/api/login, roles: PUBLIC_ACCESS }
