@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {getProfile} from "../api/api.js";
 import jwt_decode from "jwt-decode";
 import UserPosts from "../components/UserPosts/UserPosts.jsx";
+import Logout from "../components/Logout/Logout.jsx";
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({});
@@ -26,6 +27,7 @@ const ProfilePage = () => {
                 <p>Email : {userData.email}</p>
             </div>
             <UserPosts/>
+            <Logout/>
         </>
     );
 };

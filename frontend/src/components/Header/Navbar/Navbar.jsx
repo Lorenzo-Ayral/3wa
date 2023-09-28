@@ -30,11 +30,18 @@ const Navbar = () => {
                         </Link>
                     </li>
                 ) : (
-                    <li className={styles.navItem}>
-                        <Link to="/login" className={styles.navLink}>
-                            Connexion
-                        </Link>
-                    </li>
+                    <>
+                        <li className={styles.navItem}>
+                            <Link to="/login" className={styles.navLink}>
+                                Connexion
+                            </Link>
+                        </li>
+                        <li className={styles.navItem}>
+                            <Link to="/inscription" className={styles.navLink}>
+                                Inscription
+                            </Link>
+                        </li>
+                    </>
                 )}
             </ul>
         </nav>

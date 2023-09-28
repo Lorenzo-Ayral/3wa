@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Action\NotFoundAction;
+use ApiPlatform\Metadata\Post as ApiPost;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
@@ -24,10 +24,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: true,
         ),
         new GetCollection(),
-//        'delete' => [
-//            'security' => 'is_granted("ROLE_ADMIN")',
-//            'security_message' => 'Vous devez être administrateur pour accéder à cette ressource.',
-//        ],
+        new ApiPost(
+            controller: UserController::class,
+            normalizationContext: ['groups' => ['read']],
+            denormalizationContext: ['groups' => ['write']],
+            read: false,
+            write: true,
+        ),
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
@@ -57,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['write', 'exclude_password'])]
+    #[Groups(['write', 'read'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -309,7 +312,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setSender(Friendship $sender): static
     {
-        // set the owning side of the relation if necessary
         if ($sender->getSender() !== $this) {
             $sender->setSender($this);
         }
@@ -326,7 +328,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setReceiver(Friendship $receiver): static
     {
-        // set the owning side of the relation if necessary
         if ($receiver->getSender() !== $this) {
             $receiver->setSender($this);
         }
@@ -350,5 +351,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }

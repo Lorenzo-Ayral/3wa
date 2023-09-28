@@ -9,10 +9,15 @@ auth:
     path: /auth
     methods: ['POST']
 
-app_user_by_id:
-    path: api/users/{id}
-    controller: App\Controller\UserController::showProfile
-    methods: ['GET']
+#app_user_by_id:
+#    path: api/users/{id}
+#    controller: App\Controller\UserController::showProfile
+#    methods: ['GET']
+
+#create_user:
+#    path: api/users
+#    controller: App\Controller\UserController::createUser
+#    methods: ['POST']
 #    defaults:
 #        _api_resource_class: 'App\Entity\User'
 #        _api_item_operation_name: 'get'

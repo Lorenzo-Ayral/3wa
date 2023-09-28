@@ -60,19 +60,19 @@ services:
     container_name: mailhog
     image: mailhog/mailhog
     logging:
-      driver: 'none'  # disable saving logs
+      driver: 'none'
     ports:
       - "1030:1030" # smtp server
       - "8025:8025" # web ui
 
-  sass-compiler: # New service for SASS compilation
+  sass-compiler:
     container_name: sass-compiler
     image: mpsorg/sass-compiler
     volumes:
-      - ./frontend/src:/app/src/frontend # Mount the frontend/src directory
-      - ./frontend/src/css:/css # Mount the CSS output directory
-    command: [ "sass", "--watch", "/app/src/frontend:/css", "--style", "compressed" ] # Watch the frontend/src directory
-    working_dir: /app/src/frontend # Set the working directory
+      - ./frontend/src:/app/src/frontend
+      - ./frontend/src/css:/css
+    command: [ "sass", "--watch", "/app/src/frontend:/css", "--style", "compressed" ]
+    working_dir: /app/src/frontend
     networks:
       - app
     depends_on:
@@ -83,4 +83,4 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data: {}
+  mysql-data: { }

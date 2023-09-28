@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
-    public function apiLogout(): Response
+    public function logout(): Response
     {
         return $this->json([
             'message' => 'Logged out',
