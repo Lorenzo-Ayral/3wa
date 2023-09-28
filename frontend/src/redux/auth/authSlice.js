@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('jwtToken'),
 };
 
 const authSlice = createSlice({
@@ -11,12 +11,12 @@ const authSlice = createSlice({
         loginSuccess: (state) => {
             state.isAuthenticated = true;
         },
-        logout: (state) => {
+        logoutSuccess: (state) => {
             state.isAuthenticated = false;
         },
     },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, logoutSuccess } = authSlice.actions;
 
 export default authSlice.reducer;
