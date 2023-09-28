@@ -63,7 +63,7 @@ class UserController extends AbstractController
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setDateOfBirth($dateOfBirth);
-        $user->setProfilePicture($data['profilePicture']);
+//        $user->setProfilePicture($data['profilePicture']);
         $user->setCreatedAt(new \DateTimeImmutable());
         $user->setRoles(['ROLE_USER']);
 

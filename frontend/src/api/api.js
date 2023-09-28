@@ -46,8 +46,8 @@ export const getUsers = () => {
         });
 };
 
-export const createUser = (userData) => {
-    return api.post('users', userData);
+export const createUser = (data) => {
+    return api.post('create/users', data);
 };
 
 export const getPosts = () => {

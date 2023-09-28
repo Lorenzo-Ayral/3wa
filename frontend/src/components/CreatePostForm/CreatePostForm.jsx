@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {createPost} from "../../api/api.js";
 
-const PostForm = () => {
+const CreatePostForm = () => {
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
     const [error, setError] = useState(null);
@@ -59,4 +59,4 @@ const PostForm = () => {
     );
 };
 
-export default PostForm;
+export default CreatePostForm;
