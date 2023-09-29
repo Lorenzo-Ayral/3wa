@@ -2,12 +2,10 @@ import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {decrement, increment} from "../redux/reducers/counterReducer";
-import PostList from "../components/PostList/PostList.jsx";
-import UserList from "../components/UserList/UserList.jsx";
-import CreatePostForm from "../components/CreatePostForm/CreatePostForm.jsx";
+import PostList from "../components/PostList/PostList";
+import CreatePostForm from "../components/CreatePostForm/CreatePostForm";
 
 export const HomePage = () => {
-    // const [count, setCount] = useState(0)
     const count = useSelector((state) => state.counter);
     const dispatch = useDispatch();
 
@@ -37,7 +35,6 @@ export const HomePage = () => {
                 Click on the Vite and React logos to learn more
             </p>
             <CreatePostForm/>
-            <UserList/>
             <PostList/>
         </>
     )
