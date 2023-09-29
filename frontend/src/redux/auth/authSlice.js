@@ -1,8 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwt_decode from "jwt-decode";
 
+const getRoleFromToken = () => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+        const decodedToken = jwt_decode(jwtToken);
+        if (decodedToken && decodedToken.roles) {
+            return decodedToken.roles[0];
+        }
+    }
+    return null;
+};
+
 const initialState = {
     isAuthenticated: !!localStorage.getItem('jwtToken'),
+    role: getRoleFromToken(),
 };
 
 const authSlice = createSlice({
@@ -11,11 +23,11 @@ const authSlice = createSlice({
     reducers: {
         loginSuccess: (state) => {
             state.isAuthenticated = true;
-            const decodedToken = jwt_decode(localStorage.getItem('jwtToken'));
-            state.role = decodedToken.roles[0];
+            state.role = getRoleFromToken();
         },
         logoutSuccess: (state) => {
             state.isAuthenticated = false;
+            state.role = null
         },
     },
 });

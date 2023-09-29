@@ -20,7 +20,7 @@ const CreatePostForm = () => {
             setContent('');
             setError(null);
         } catch (err) {
-            setError('Erreur lors de la création du post.');
+            setError('Veuillez vous connecter pour poster');
             console.error('Erreur:', err);
         }
     };
