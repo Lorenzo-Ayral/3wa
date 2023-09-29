@@ -7,8 +7,13 @@ WORKDIR /app
 # Copiez les fichiers package.json et yarn.lock dans le conteneur
 COPY package.json yarn.lock ./
 
+RUN apk --no-cache add yarn
+
 # Installez les dépendances avec Yarn
 RUN yarn install
+
+# Installez Vite globalement
+RUN yarn global add create-vite
 
 # Copiez le reste des fichiers de l'application dans le conteneur
 COPY . .
@@ -18,3 +23,5 @@ EXPOSE 3000
 
 # Commande pour démarrer l'application React
 CMD ["yarn", "run", "dev"]
+
+#CMD ["yarn", "build"]
