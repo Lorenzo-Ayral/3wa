@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getUsers} from "../../api/api.js";
+import {deleteUser, getUsers} from "../../api/api.js";
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -14,6 +14,15 @@ function UserList() {
             });
     }, []);
 
+    const handleDeleteUser = (userId) => {
+        deleteUser(userId)
+            .catch((error) => {
+                console.error("Erreur lors de la suppression de l'utilisateur :", error);
+            });
+    }
+
+    console.log(users)
+
     return (
         <div>
             <h2>Liste des utilisateurs</h2>
@@ -25,6 +34,7 @@ function UserList() {
                         <strong>Nom complet :</strong> {user.first_name} {user.last_name}
                         <br/>
                         <strong>Email :</strong> {user.email}
+                        <button onClick={() => handleDeleteUser(user.id)}>Supprimer l'utilisateur</button>
                     </li>
                 ))}
                 {!users && <li>Aucun utilisateur pour le moment</li>}

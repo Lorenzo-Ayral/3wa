@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as ApiPost;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
@@ -31,6 +33,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: false,
             write: true,
         ),
+        new Delete(),
+        new Patch()
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
