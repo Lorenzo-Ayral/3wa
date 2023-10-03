@@ -11,6 +11,7 @@ function UserProfil() {
         first_name: "",
         last_name: "",
         email: "",
+        password: "",
     });
 
     const token = localStorage.getItem("jwtToken");
@@ -45,7 +46,9 @@ function UserProfil() {
             first_name: newUserData.firstName,
             last_name: newUserData.lastName,
             email: newUserData.email,
+            password: newUserData.password,
         };
+        console.log(updatedUserData)
 
         updateUser(userId, updatedUserData)
             .then(() => {
@@ -97,6 +100,12 @@ function UserProfil() {
 
                             <label>Nouvel email:</label>
                             <input type="email" name="email" value={newUserData.email} onChange={handleChange} />
+
+                            <label>Nouveau mot de passe:</label>
+                            <input type="password" name="password" value={newUserData.password} onChange={handleChange} />
+
+                            <label>Confirmer le nouveau mot de passe:</label>
+                            <input type="password" name="passwordConfirm" value={newUserData.passwordConfirm} onChange={handleChange} />
                         </>
                     }
                 />
