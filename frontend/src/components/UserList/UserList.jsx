@@ -21,8 +21,6 @@ function UserList() {
             });
     }
 
-    console.log(users)
-
     return (
         <div>
             <h2>Liste des utilisateurs</h2>
