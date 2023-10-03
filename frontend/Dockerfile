@@ -23,5 +23,3 @@ EXPOSE 3000
 
 # Commande pour démarrer l'application React
 CMD ["yarn", "run", "dev"]
-
-#CMD ["yarn", "build"]

@@ -67,6 +67,19 @@ export const deleteUser = (userId) => {
         });
 }
 
+export const updateUser = (userId, updatedUserData) => {
+    return api.patch('users/' + userId, updatedUserData, {
+        headers: {
+            'Content-Type': 'application/merge-patch+json',
+        },
+    })
+        .catch((error) => {
+            console.error('Erreur lors de la modification de l\'utilisateur :', error);
+            throw error;
+        });
+}
+
+
 export const getPosts = () => {
     return api.get('posts')
         .then((response) => response.data['hydra:member'])
