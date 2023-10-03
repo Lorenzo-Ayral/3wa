@@ -12,6 +12,7 @@ function UserProfil() {
         last_name: "",
         email: "",
         password: "",
+        passwordConfirm: "",
     });
 
     const token = localStorage.getItem("jwtToken");
@@ -41,6 +42,11 @@ function UserProfil() {
     };
 
     const handleUpdateUser = () => {
+        if (newUserData.password !== newUserData.passwordConfirm) {
+            alert("Les mots de passe ne correspondent pas !");
+            return;
+        }
+
         const updatedUserData = {
             username: newUserData.username,
             first_name: newUserData.firstName,
@@ -48,7 +54,6 @@ function UserProfil() {
             email: newUserData.email,
             password: newUserData.password,
         };
-        console.log(updatedUserData)
 
         updateUser(userId, updatedUserData)
             .then(() => {
