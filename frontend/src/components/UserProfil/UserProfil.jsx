@@ -74,8 +74,6 @@ function UserProfil() {
         }));
     };
 
-    console.log(userData, newUserData, userId);
-
     return (
         <>
             <div>
