@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
-import {getUserPosts, deleteUserPost, getPosts, getComments} from "../../api/api.js";
+import {useEffect, useState} from "react";
+import {getUserPosts, deleteUserPost, getPosts, getComments, createComment, createPost} from "../../api/api.js";
 import "moment/locale/fr";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import {format} from "date-fns";
+import {fr} from "date-fns/locale";
 import Modal from "../Modal/Modal.jsx";
 
-function PostList({ mode }) {
+function PostList({mode}) {
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([])
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalIsOpenDeletePost, setModalIsOpenDeletePost] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
+    const [modalIsOpenCommentPost, setModalIsOpenCommentPost] = useState(false);
+    const [postIdToComment, setPostIdToComment] = useState(null);
+    const [content, setContent] = useState('');
 
     useEffect(() => {
         if (mode === "UserPosts") {
@@ -38,27 +41,51 @@ function PostList({ mode }) {
             })
     }, [mode]);
 
-    console.log(comments)
-
     const handleDeletePost = () => {
         deleteUserPost(postIdToDelete)
             .then(() => {
                 setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postIdToDelete));
-                setModalIsOpen(false);
+                setModalIsOpenDeletePost(false);
             })
             .catch((error) => {
                 console.error("Erreur lors de la suppression du post :", error);
             });
     };
 
-    const openModal = (postId) => {
+    const handleCommentPost = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append('content', content);
+            const response = await createComment(content, postIdToComment);
+            console.log('Post créé avec succès:', response);
+            setContent('');
+            setComments((prevComments) => [...prevComments, response]);
+            setModalIsOpenCommentPost(false);
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
+    };
+
+
+    const openModalDeletePost = (postId) => {
         setPostIdToDelete(postId);
-        setModalIsOpen(true);
+        setModalIsOpenDeletePost(true);
     }
 
-    const closeModal = () => {
+    const closeModalDeletePost = () => {
         setPostIdToDelete(null);
-        setModalIsOpen(false);
+        setModalIsOpenDeletePost(false);
+    }
+
+    const openModalCommentPost = (postId) => {
+        setPostIdToComment(postId);
+        setModalIsOpenCommentPost(true);
+    }
+
+    const closeModalCommentPost = () => {
+        setPostIdToComment(null);
+        setModalIsOpenCommentPost(false);
     }
 
     return (
@@ -70,28 +97,30 @@ function PostList({ mode }) {
                         <li key={post.id}>
                             <h3>Voici un post</h3>
                             <strong>Créé par</strong> {post.authorUsername}
-                            <br />
+                            <br/>
                             <strong>Contenu</strong> {post.content}
-                            <br />
+                            <br/>
                             <strong>Crée le</strong>{" "}
                             {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
                                 locale: fr,
                             })}
                             {mode === "UserPosts" && (
-                                <button onClick={() => openModal(post.id)}>Supprimer</button>
+                                <button onClick={() => openModalDeletePost(post.id)}>Supprimer</button>
                             )}
 
-                            <h4 style={{margin: "10px"}}>Commentaires</h4>
-                            <ul>
-                                {comments.length > 0 ? (
+                            <h4 style={{marginTop: "10px"}}>Commentaires</h4>
+                            <ul style={{marginBottom: "30px"}}>
+                                {comments
+                                    .filter((comment) => comment.postId === post.id)
+                                    .length > 0 ? (
                                     comments
                                         .filter((comment) => comment.postId === post.id)
                                         .map((comment) => (
                                             <li key={comment.id}>
                                                 <strong>Créé par</strong> {comment.authorUsername}
-                                                <br />
+                                                <br/>
                                                 <strong>Contenu</strong> {comment.content}
-                                                <br />
+                                                <br/>
                                                 <strong>Crée le</strong>{" "}
                                                 {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
                                                     locale: fr,
@@ -101,6 +130,7 @@ function PostList({ mode }) {
                                 ) : (
                                     <li>Aucun commentaire pour le moment</li>
                                 )}
+                                <button onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire</button>
                             </ul>
                         </li>
                     ))
@@ -108,13 +138,31 @@ function PostList({ mode }) {
                     <li>Aucun post pour le moment</li>
                 )}
             </ul>
-            {modalIsOpen && (
+            {modalIsOpenDeletePost && (
                 <Modal
-                    modalIsOpen={modalIsOpen}
-                    closeModal={closeModal}
+                    modalIsOpen={modalIsOpenDeletePost}
+                    closeModal={closeModalDeletePost}
                     modalConfirm={handleDeletePost}
                     modalTitle="Supprimer un post"
                     modalBody="Êtes-vous sûr de vouloir supprimer ce post ?"
+                />
+            )}
+            {modalIsOpenCommentPost && (
+                <Modal
+                    modalIsOpen={modalIsOpenCommentPost}
+                    closeModal={closeModalCommentPost}
+                    modalConfirm={handleCommentPost}
+                    modalTitle="Ajouter un commentaire"
+                    modalBody={
+                        <>
+                            <label>Contenu du post :</label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                required
+                            />
+                        </>
+                    }
                 />
             )}
         </div>

@@ -132,3 +132,19 @@ export const getComments = () => {
             throw error;
         });
 }
+
+export const createComment = async (content, postId) => {
+    const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
+    const post = '/api/posts/' + postId;
+    try {
+        const response = await api.post(
+            'comments',
+            {content, user: authorId, post, createdAt: new Date()},
+        );
+        console.log('Commentaire créé avec succès :', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors de la création du commentaire :', error);
+        throw error;
+    }
+}

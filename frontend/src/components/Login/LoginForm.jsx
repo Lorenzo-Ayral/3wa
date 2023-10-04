@@ -60,7 +60,7 @@ const LoginForm = () => {
                         value={formData.password}
                         onChange={handleChange}
                     />
-                    {errors.password && <div className="error">{errors.password}</div>}
+                    {errors && <div className="error">Erreur lors de la connexion</div>}
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
