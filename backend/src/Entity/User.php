@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as ApiPost;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
@@ -31,6 +33,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: false,
             write: true,
         ),
+        new Delete(),
+        new Patch(
+//            controller: UserController::class,
+//            normalizationContext: ['groups' => ['read']],
+//            denormalizationContext: ['groups' => ['write']],
+//            read: false,
+//            write: true,
+        )
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
@@ -75,6 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['read', 'write'])]
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, orphanRemoval: true)]
@@ -107,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }

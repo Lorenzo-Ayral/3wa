@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 
 const Navbar = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const isAdmin = useSelector((state) => state.auth.role);
 
     return (
         <nav className={styles.nav}>
@@ -42,6 +43,13 @@ const Navbar = () => {
                             </Link>
                         </li>
                     </>
+                )}
+                {isAdmin === "ROLE_ADMIN" && (
+                    <li className={styles.navItem}>
+                        <Link to="/admin" className={styles.navLink}>
+                            Admin
+                        </Link>
+                    </li>
                 )}
             </ul>
         </nav>

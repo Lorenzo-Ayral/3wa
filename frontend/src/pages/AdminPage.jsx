@@ -7,7 +7,6 @@ function AdminPage() {
             <UserList/>
         </div>
     );
-
 }
 
 export default AdminPage;

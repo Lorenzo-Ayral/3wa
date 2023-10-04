@@ -7,10 +7,13 @@ import ContactPage from './pages/ContactPage';
 import LoginForm from "./components/Login/LoginForm";
 import ProfilePage from "./pages/ProfilePage";
 import {useSelector} from 'react-redux';
-import CreateUserPage from "./pages/CreateUserPage.jsx";
+import CreateUserPage from "./pages/CreateUserPage";
+import Page404 from "./pages/Page404";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const isAdmin = useSelector((state) => state.auth.role);
 
     return (
         <BrowserRouter>
@@ -20,8 +23,10 @@ function App() {
                 <Route path="/about" element={<AboutPage/>}/>
                 <Route path="/contact" element={<ContactPage/>}/>
                 <Route path="/login" element={<LoginForm/>}/>
-                <Route path="/profil" element={isAuthenticated ? <ProfilePage/> : <Navigate to="/login"/>}/>
                 <Route path="/inscription" element={<CreateUserPage/>}/>
+                <Route path="/profil" element={isAuthenticated ? <ProfilePage/> : <Navigate to="/login"/>}/>
+                <Route path="/admin" element={isAdmin === "ROLE_ADMIN" ? <AdminPage/> : <Navigate to="/404"/>}/>
+                <Route path="/404" element={<Page404/>}/>
             </Routes>
         </BrowserRouter>
     )

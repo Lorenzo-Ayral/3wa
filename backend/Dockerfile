@@ -14,9 +14,6 @@ COPY . .
 # Installez Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Installez Doctrine ORM
-RUN composer require symfony/orm-pack
-
 # Téléchargez Symfony CLI binaire précompilé directement depuis le site officiel
 RUN wget https://github.com/symfony/cli/releases/latest/download/symfony_linux_amd64 -O /usr/local/bin/symfony && \
     chmod +x /usr/local/bin/symfony

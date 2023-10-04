@@ -38,7 +38,7 @@ export const logout = () => {
 
 export const getProfile = async (userId) => {
     try {
-        const response = await api.get(`users/${userId}`) ;
+        const response = await api.get(`users/${userId}`);
         return response.data;
     } catch (error) {
         console.error('Erreur lors de la récupération des données de l\'utilisateur :', error);
@@ -58,6 +58,28 @@ export const getUsers = () => {
 export const createUser = (data) => {
     return api.post('create/users', data);
 };
+
+export const deleteUser = (userId) => {
+    return api.delete('users/' + userId)
+        .catch((error) => {
+            console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+            throw error;
+        });
+}
+
+export const updateUser = (userId, updatedUserData) => {
+    return api.patch('users/' + userId, updatedUserData, {
+        headers: {
+            'Content-Type': 'application/merge-patch+json',
+        },
+    })
+        .then((response) => response.data)
+        .catch((error) => {
+            console.error('Erreur lors de la modification de l\'utilisateur :', error);
+            throw error;
+        });
+}
+
 
 export const getPosts = () => {
     return api.get('posts')
@@ -80,10 +102,10 @@ export const getUserPosts = () => {
 
 export const deleteUserPost = (postId) => {
     return api.delete('posts/' + postId)
-    .catch((error) => {
-        console.error('Erreur lors de la suppression du post :', error);
-        throw error;
-    });
+        .catch((error) => {
+            console.error('Erreur lors de la suppression du post :', error);
+            throw error;
+        });
 }
 
 
@@ -92,7 +114,7 @@ export const createPost = async (image, content) => {
     try {
         const response = await api.post(
             'posts',
-            { image, content, author: authorId },
+            {image, content, author: authorId},
         );
         console.log('Post créé avec succès :', response.data);
         return response.data;
