@@ -53,6 +53,7 @@ function UserProfil() {
             last_name: newUserData.lastName,
             email: newUserData.email,
             password: newUserData.password,
+            updated_at : new Date(),
         };
 
         updateUser(userId, updatedUserData)

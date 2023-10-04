@@ -34,7 +34,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             write: true,
         ),
         new Delete(),
-        new Patch()
+        new Patch(
+//            controller: UserController::class,
+//            normalizationContext: ['groups' => ['read']],
+//            denormalizationContext: ['groups' => ['write']],
+//            read: false,
+//            write: true,
+        )
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
@@ -79,6 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['read', 'write'])]
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, orphanRemoval: true)]
@@ -111,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }

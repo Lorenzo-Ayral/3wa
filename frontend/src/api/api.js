@@ -73,6 +73,7 @@ export const updateUser = (userId, updatedUserData) => {
             'Content-Type': 'application/merge-patch+json',
         },
     })
+        .then((response) => response.data)
         .catch((error) => {
             console.error('Erreur lors de la modification de l\'utilisateur :', error);
             throw error;

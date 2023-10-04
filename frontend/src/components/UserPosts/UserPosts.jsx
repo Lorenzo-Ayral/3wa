@@ -54,16 +54,16 @@ function PostList() {
                 ) : (
                     <li>Aucun post pour le moment</li>
                 )}
-                {modalIsOpen && (
-                    <Modal
-                        modalIsOpen={modalIsOpen}
-                        closeModal={closeModal}
-                        modalConfirm={handleDeletePost}
-                        modalTitle="Supprimer un post"
-                        modalBody="Êtes-vous sûr de vouloir supprimer ce post ?"
-                    />
-                )}
             </ul>
+            {modalIsOpen && (
+                <Modal
+                    modalIsOpen={modalIsOpen}
+                    closeModal={closeModal}
+                    modalConfirm={handleDeletePost}
+                    modalTitle="Supprimer un post"
+                    modalBody="Êtes-vous sûr de vouloir supprimer ce post ?"
+                />
+            )}
         </div>
     );
 }
