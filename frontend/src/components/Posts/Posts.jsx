@@ -1,21 +1,34 @@
-import {useEffect, useState} from "react";
-import {deleteUserPost, getUserPosts} from "../../api/api.js";
+import { useEffect, useState } from "react";
+import { getUserPosts, deleteUserPost, getPosts } from "../../api/api.js";
+import "moment/locale/fr";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import Modal from "../Modal/Modal.jsx";
 
-function PostList() {
+function PostList({ mode }) {
     const [posts, setPosts] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
 
     useEffect(() => {
-        getUserPosts()
-            .then((response) => {
-                setPosts(response);
-            })
-            .catch((error) => {
-                console.error('Erreur lors de la récupération des posts :', error);
-            });
-    }, []);
+        if (mode === "UserPosts") {
+            getUserPosts()
+                .then((response) => {
+                    setPosts(response);
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de la récupération des posts :', error);
+                });
+        } else if (mode === "AllPosts") {
+            getPosts()
+                .then((response) => {
+                    setPosts(response);
+                })
+                .catch((error) => {
+                    console.error("Erreur lors de la récupération des posts :", error);
+                });
+        }
+    }, [mode]);
 
     const handleDeletePost = () => {
         deleteUserPost(postIdToDelete)
@@ -38,6 +51,7 @@ function PostList() {
         setModalIsOpen(false);
     }
 
+
     return (
         <div>
             <h2>Vos posts</h2>
@@ -45,10 +59,17 @@ function PostList() {
                 {posts.length > 0 ? (
                     posts.map((post) => (
                         <li key={post.id}>
+                            <strong>Créé par</strong> {post.authorUsername}
+                            <br />
                             <strong>Contenu</strong> {post.content}
                             <br />
-                            <strong>Créé le</strong> {post.created_at}
-                            <button onClick={() => openModal(post.id)}>Supprimer</button>
+                            <strong>Crée le</strong>{" "}
+                            {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                locale: fr,
+                            })}
+                            {mode === "UserPosts" && (
+                                <button onClick={() => openModal(post.id)}>Supprimer</button>
+                            )}
                         </li>
                     ))
                 ) : (
