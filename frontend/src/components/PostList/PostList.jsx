@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserPosts, deleteUserPost, getPosts } from "../../api/api.js";
+import {getUserPosts, deleteUserPost, getPosts, getComments} from "../../api/api.js";
 import "moment/locale/fr";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -7,6 +7,7 @@ import Modal from "../Modal/Modal.jsx";
 
 function PostList({ mode }) {
     const [posts, setPosts] = useState([]);
+    const [comments, setComments] = useState([])
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
 
@@ -28,7 +29,16 @@ function PostList({ mode }) {
                     console.error("Erreur lors de la récupération des posts :", error);
                 });
         }
+        getComments()
+            .then((response) => {
+                setComments(response);
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la récupération des commentaires :", error)
+            })
     }, [mode]);
+
+    console.log(comments)
 
     const handleDeletePost = () => {
         deleteUserPost(postIdToDelete)
@@ -51,14 +61,14 @@ function PostList({ mode }) {
         setModalIsOpen(false);
     }
 
-
     return (
         <div>
-            <h2>Vos posts</h2>
+            <h2>Posts</h2>
             <ul>
                 {posts.length > 0 ? (
                     posts.map((post) => (
                         <li key={post.id}>
+                            <h3>Voici un post</h3>
                             <strong>Créé par</strong> {post.authorUsername}
                             <br />
                             <strong>Contenu</strong> {post.content}
@@ -70,6 +80,28 @@ function PostList({ mode }) {
                             {mode === "UserPosts" && (
                                 <button onClick={() => openModal(post.id)}>Supprimer</button>
                             )}
+
+                            <h4 style={{margin: "10px"}}>Commentaires</h4>
+                            <ul>
+                                {comments.length > 0 ? (
+                                    comments
+                                        .filter((comment) => comment.postId === post.id)
+                                        .map((comment) => (
+                                            <li key={comment.id}>
+                                                <strong>Créé par</strong> {comment.authorUsername}
+                                                <br />
+                                                <strong>Contenu</strong> {comment.content}
+                                                <br />
+                                                <strong>Crée le</strong>{" "}
+                                                {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                                    locale: fr,
+                                                })}
+                                            </li>
+                                        ))
+                                ) : (
+                                    <li>Aucun commentaire pour le moment</li>
+                                )}
+                            </ul>
                         </li>
                     ))
                 ) : (

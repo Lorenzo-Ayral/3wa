@@ -123,3 +123,12 @@ export const createPost = async (image, content) => {
         throw error;
     }
 };
+
+export const getComments = () => {
+    return api.get('comments')
+        .then((response) => response.data['hydra:member'])
+        .catch((error) => {
+            console.error('Erreur lors de la récupération des commentaires :', error);
+            throw error;
+        });
+}
