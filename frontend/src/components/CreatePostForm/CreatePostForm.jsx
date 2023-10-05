@@ -9,12 +9,8 @@ const CreatePostForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formData = new FormData();
-            formData.append('content', content);
-            if (image) {
-                formData.append('picture', image);
-            }
-            const response = await createPost(image, content);
+            console.log(content, image)
+            const response = await createPost(content, image);
             console.log('Post créé avec succès:', response);
             setImage(null);
             setContent('');
@@ -25,8 +21,9 @@ const CreatePostForm = () => {
         }
     };
 
+
     const handleImageChange = (e) => {
-        const selectedImage = e.target.files[0];
+        const selectedImage = e.target.files ? e.target.files[0] : null;
         setImage(selectedImage);
     };
 

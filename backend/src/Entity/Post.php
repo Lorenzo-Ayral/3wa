@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post as ApiPost;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Delete;
 use App\Controller\PostController;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +27,8 @@ use DateTimeImmutable;
         new Get(
             controller: PostController::class,
         ),
-        new GetCollection()
+        new GetCollection(),
+        new Delete()
 
     ]
 )]

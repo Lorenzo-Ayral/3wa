@@ -109,13 +109,15 @@ export const deleteUserPost = (postId) => {
 }
 
 
-export const createPost = async (image, content) => {
+export const createPost = async (content, image) => {
     const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
     try {
-        const response = await api.post(
-            'posts',
-            {image, content, author: authorId},
-        );
+        const data = { content, author: authorId};
+        if (image) {
+            data.image = image;
+        }
+        console.log('data :', data)
+        const response = await api.post('posts', data);
         console.log('Post créé avec succès :', response.data);
         return response.data;
     } catch (error) {

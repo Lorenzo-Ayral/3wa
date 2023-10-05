@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +17,7 @@ class PostController extends AbstractController
     private FileUploader $fileUploader;
 
     public function __construct(
-        EntityManagerInterface $entityManager
-        , FileUploader $fileUploader
+        EntityManagerInterface $entityManager, FileUploader $fileUploader
     )
     {
         $this->entityManager = $entityManager;
@@ -27,20 +27,36 @@ class PostController extends AbstractController
     #[Route('/api/posts', name: 'create_post', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
-        $data = json_decode($request->request->get('data'), true);
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['content']) || !isset($data['author'])) {
+            return $this->json(['message' => 'Les données JSON sont incorrectes.'], Response::HTTP_BAD_REQUEST);
+        }
+
         $content = $data['content'];
-        $authorId = $data['author'];
+        $authorPath = $data['author'];
+
+        $parts = explode('/', $authorPath);
+        $userId = end($parts);
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $author = $userRepository->find($userId);
+
+        if (!$author) {
+            return $this->json(['message' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
 
         $post = new Post();
-        $post->setAuthor($authorId);
+        $post->setAuthor($author);
         $post->setContent($content);
 
-        $picture = $request->files->get('picture');
+        $picture = $request->files->get('image');
 
         if ($picture) {
             $fileName = $this->fileUploader->upload($picture);
-
             $post->setPicture($fileName);
+        } else {
+            $post->setPicture(null);
         }
 
         $post->setCreatedAt(new \DateTimeImmutable());
@@ -50,6 +66,9 @@ class PostController extends AbstractController
 
         return $this->json($post, Response::HTTP_CREATED);
     }
+
+
+
 
     #[Route('/api/posts', name: 'get_posts', methods: ['GET'])]
     public function index(): Response
