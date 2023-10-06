@@ -3,16 +3,16 @@ import {createPost} from "../../api/api.js";
 
 const CreatePostForm = () => {
     const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
+    const [picture, setPicture] = useState(null);
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(content, image)
-            const response = await createPost(content, image);
+            console.log(content, picture)
+            const response = await createPost(content, picture);
             console.log('Post créé avec succès:', response);
-            setImage(null);
+            setPicture(null);
             setContent('');
             setError(null);
         } catch (err) {
@@ -23,18 +23,19 @@ const CreatePostForm = () => {
 
 
     const handleImageChange = (e) => {
-        const selectedImage = e.target.files ? e.target.files[0] : null;
-        setImage(selectedImage);
+        const selectedImage = e.target.files[0];
+        setPicture(selectedImage);
     };
 
     return (
         <div>
             <h2>Créer un post</h2>
             {error && <div className="error">{error}</div>}
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <form onSubmit={handleSubmit} >
                 <div>
                     <label>Image :</label>
                     <input
+                        name="picture"
                         type="file"
                         accept="image/*"
                         onChange={handleImageChange}

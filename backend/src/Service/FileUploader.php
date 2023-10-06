@@ -5,6 +5,7 @@ namespace App\Service;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Image;
 
 class FileUploader
 {
@@ -20,10 +21,20 @@ class FileUploader
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
+        $violations = $this->validator->validate($file, [
+            new Image([
+                'mimeTypes' => ['image/png', 'image/jpeg'],
+            ]),
+        ]);
+
+        if (count($violations) > 0) {
+            throw new RuntimeException(implode(', ', $violations));
+        }
+
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-// ... handle exception if something happens during file upload
+            dump($e->getMessage());
         }
 
         return $fileName;

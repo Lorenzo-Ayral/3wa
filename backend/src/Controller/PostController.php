@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,8 +25,8 @@ class PostController extends AbstractController
         $this->fileUploader = $fileUploader;
     }
 
-    #[Route('/api/posts', name: 'create_post', methods: ['POST'])]
-    public function __invoke(Request $request): Response
+    #[Route('/api/posts', name: 'create_post', requirements: ['_format' => 'json'], methods: ['POST'])]
+    public function __invoke(Request $request, FileUploader $fileUploader): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -50,10 +51,25 @@ class PostController extends AbstractController
         $post->setAuthor($author);
         $post->setContent($content);
 
-        $picture = $request->files->get('image');
+        $picture = $data['picture'];
 
-        if ($picture) {
-            $fileName = $this->fileUploader->upload($picture);
+        // Décoder l'image en base64
+        $decodedPicture = base64_decode($picture);
+
+        // Créer un objet UploadedFile à partir de l'image décodée en base64
+        $file = new UploadedFile(
+            $decodedPicture,
+            uniqid() . '.png',
+            'image/png',
+            null,
+            false,
+            true
+        );
+
+        // Envoyer l'objet UploadedFile à la méthode upload()
+        $fileName = $fileUploader->upload($file);
+
+        if ($fileName) {
             $post->setPicture($fileName);
         } else {
             $post->setPicture(null);
