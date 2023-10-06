@@ -96,6 +96,9 @@ function PostList({mode}) {
                     posts.map((post) => (
                         <li key={post.id}>
                             <h3>Voici un post</h3>
+                            <br />
+                            <strong>Image :<img alt="" src={post.picture}></img></strong>
+                            <br/>
                             <strong>Créé par</strong> {post.authorUsername}
                             <br/>
                             <strong>Contenu</strong> {post.content}

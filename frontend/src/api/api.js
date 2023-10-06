@@ -115,7 +115,7 @@ export const createPost = async (content, picture) => {
         const data = {
             content,
             author: authorId,
-            picture: btoa(picture),
+            picture: picture ? await pictureToBase64(picture) : null, // Convert to base64 if picture exists
         };
 
         const response = await api.post('posts', data, {
@@ -123,7 +123,7 @@ export const createPost = async (content, picture) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log('data1 :', data)
+
         console.log('Post créé avec succès :', response.data);
         return response.data;
     } catch (error) {
@@ -131,6 +131,18 @@ export const createPost = async (content, picture) => {
         throw error;
     }
 };
+
+// Function to convert a File object to base64
+function pictureToBase64(picture) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(picture);
+    });
+}
 
 export const getComments = () => {
     return api.get('comments')

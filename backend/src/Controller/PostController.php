@@ -51,26 +51,32 @@ class PostController extends AbstractController
         $post->setAuthor($author);
         $post->setContent($content);
 
-        $picture = $data['picture'];
+        $pictureBase64 = $data['picture'];
 
-        // Décoder l'image en base64
-        $decodedPicture = base64_decode($picture);
+        if ($pictureBase64) {
+            $tempFileName = tempnam(sys_get_temp_dir(), 'image_');
+            file_put_contents($tempFileName, base64_decode($pictureBase64));
 
-        // Créer un objet UploadedFile à partir de l'image décodée en base64
-        $file = new UploadedFile(
-            $decodedPicture,
-            uniqid() . '.png',
-            'image/png',
-            null,
-            false,
-            true
-        );
+            $originalFilename = pathinfo($tempFileName, PATHINFO_FILENAME);
+            $extension = pathinfo($tempFileName, PATHINFO_EXTENSION);
+            $fileName = $originalFilename . '-' . uniqid() . '.' . $extension;
 
-        // Envoyer l'objet UploadedFile à la méthode upload()
-        $fileName = $fileUploader->upload($file);
+            $file = new UploadedFile(
+                $tempFileName,
+                $fileName,
+                'image/' . $extension,
+                null,
+                true, // $test
+                true  // $error
+            );
 
-        if ($fileName) {
-            $post->setPicture($fileName);
+            $fileName = $fileUploader->upload($file);
+
+            if ($fileName) {
+                $post->setPicture($fileName);
+            } else {
+                $post->setPicture(null);
+            }
         } else {
             $post->setPicture(null);
         }
@@ -82,6 +88,7 @@ class PostController extends AbstractController
 
         return $this->json($post, Response::HTTP_CREATED);
     }
+
 
 
 
