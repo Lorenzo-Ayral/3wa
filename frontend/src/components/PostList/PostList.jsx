@@ -80,6 +80,13 @@ function PostList({mode}) {
 
     const handleDeleteComment = () => {
         deleteComment(commentIdToDelete)
+            .then(() => {
+                setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentIdToDelete));
+                setModalIsOpenDeleteComment(false);
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la suppression du commentaire :", error);
+            });
     }
 
 
@@ -110,7 +117,7 @@ function PostList({mode}) {
 
     const closeModalDeleteComment = () => {
         setCommentIdToDelete(null);
-        setModalIsOpenDeletePost(true);
+        setModalIsOpenDeleteComment(false);
     }
 
     return (
@@ -147,7 +154,7 @@ function PostList({mode}) {
                                             <li key={comment.id}>
                                                 <strong>Créé par</strong> {comment.authorUsername}
                                                 <br/>
-                                                <strong>Contenu</strong> {comment.user}
+                                                <strong>Contenu</strong> {comment.content}
                                                 <br/>
                                                 <strong>Crée le</strong>{" "}
                                                 {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
