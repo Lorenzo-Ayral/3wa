@@ -1,35 +1,73 @@
-import React, { useState } from "react";
-import styles from '../../../css/components/header/NavbarMobile/NavbarMobile.module.css';
+import {Link} from "react-router-dom";
+import styles from "../../../css/components/Header/NavbarMobile/NavbarMobile.module.css";
+import {useSelector} from "react-redux";
+import {useState} from "react";
 
 const NavbarMobile = () => {
-    const [burger_class, setBurgerClass] = useState(`${styles["burger-bar"]} ${styles["unclicked"]}`);
-    const [menu_class, setMenuClass] = useState(`${styles.menu} ${styles.hidden}`);
-    const [isMenuClicked, setIsMenuClicked] = useState(false);
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const isAdmin = useSelector((state) => state.auth.role);
 
-    const updateMenu = () => {
-        if (!isMenuClicked) {
-            setBurgerClass(`${styles["burger-bar"]} clicked`);
-            setMenuClass(`${styles.menu} visible`);
-        } else {
-            setBurgerClass(`${styles["burger-bar"]} unclicked`);
-            setMenuClass(`${styles.menu} hidden`);
-        }
-        setIsMenuClicked(!isMenuClicked);
-    }
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleOpenMenu = () => {
+        setIsOpen(true);
+    };
+
+    const handleCloseMenu = () => {
+        setIsOpen(false);
+    };
 
     return (
-        <div className={`navbar-mobile ${styles["navbar-mobile"]}`}>
-            <nav>
-                <div className={styles["burger-menu"]} onClick={updateMenu}>
-                    <div className={burger_class}></div>
-                    <div className={burger_class}></div>
-                    <div className={burger_class}></div>
-                </div>
-            </nav>
-
-            <div className={menu_class}></div>
-        </div>
-    )
-}
+        <nav className={styles.navMobile}>
+            <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
+               Ouvrir
+            </button>
+            <ul className={styles.navListMobile} style={{display: isOpen ? "block" : "none"}}>
+                <li className={styles.navItemMobile}>
+                    <Link to="/" className={styles.navLinkMobile}>
+                        Accueil
+                    </Link>
+                </li>
+                <li className={styles.navItemMobile}>
+                    <Link to="/about" className={styles.navLinkMobile}>
+                        À propos
+                    </Link>
+                </li>
+                <li className={styles.navItemMobile}>
+                    <Link to="/contact" className={styles.navLinkMobile}>
+                        Contact
+                    </Link>
+                </li>
+                {isAuthenticated ? (
+                    <li className={styles.navItemMobile}>
+                        <Link to="/profil" className={styles.navLinkMobile}>
+                            Profil
+                        </Link>
+                    </li>
+                ) : (
+                    <>
+                        <li className={styles.navItemMobile}>
+                            <Link to="/login" className={styles.navLinkMobile}>
+                                Connexion
+                            </Link>
+                        </li>
+                        <li className={styles.navItemMobile}>
+                            <Link to="/inscription" className={styles.navLinkMobile}>
+                                Inscription
+                            </Link>
+                        </li>
+                    </>
+                )}
+                {isAdmin === "ROLE_ADMIN" && (
+                    <li className={styles.navItemMobile}>
+                        <Link to="/admin" className={styles.navLinkMobile}>
+                            Admin
+                        </Link>
+                    </li>
+                )}
+            </ul>
+        </nav>
+    );
+};
 
 export default NavbarMobile;

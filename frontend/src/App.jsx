@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux';
 import CreateUserPage from "./pages/CreateUserPage";
 import Page404 from "./pages/Page404";
 import AdminPage from "./pages/AdminPage";
-
+import "@fontsource/montserrat";
 function App() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const isAdmin = useSelector((state) => state.auth.role);
