@@ -54,29 +54,20 @@ class PostController extends AbstractController
         $pictureBase64 = $data['picture'];
 
         if ($pictureBase64) {
-            $tempFileName = tempnam(sys_get_temp_dir(), 'image_');
-            file_put_contents($tempFileName, base64_decode($pictureBase64));
+            // Décodez le contenu base64 en binaire
+            $binaryData = base64_decode($pictureBase64);
 
-            $originalFilename = pathinfo($tempFileName, PATHINFO_FILENAME);
-            $extension = pathinfo($tempFileName, PATHINFO_EXTENSION);
-            $fileName = $originalFilename . '-' . uniqid() . '.' . $extension;
+            // Générez un nom de fichier unique avec une extension (par exemple, .png)
+            $fileName = uniqid() . '.png';
 
-            $file = new UploadedFile(
-                $tempFileName,
-                $fileName,
-                'image/' . $extension,
-                null,
-                true, // $test
-                true  // $error
-            );
+            // Définissez le chemin complet pour le fichier
+            $filePath = $this->fileUploader->getTargetDirectory() . '/' . $fileName;
 
-            $fileName = $fileUploader->upload($file);
+            // Écrivez le contenu binaire dans le fichier
+            file_put_contents($filePath, $binaryData);
 
-            if ($fileName) {
-                $post->setPicture($fileName);
-            } else {
-                $post->setPicture(null);
-            }
+            // Stockez le nom du fichier dans la base de données
+            $post->setPicture($fileName);
         } else {
             $post->setPicture(null);
         }
