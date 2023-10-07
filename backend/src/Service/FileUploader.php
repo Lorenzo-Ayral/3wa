@@ -3,17 +3,22 @@
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+//use Symfony\Component\HttpKernel\Exception\RuntimeException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Image;
 
 class FileUploader
 {
-    public function __construct(
-        private string           $targetDirectory,
-        private SluggerInterface $slugger,
-    )
+    private ValidatorInterface $validator;
+    public function __construct(string $targetDirectory, SluggerInterface $slugger, ValidatorInterface $validator)
     {
+        $this->targetDirectory = $targetDirectory;
+        $this->slugger = $slugger;
+        $this->validator = $validator;
     }
+
 
     public function upload(UploadedFile $file): string
     {
@@ -21,10 +26,20 @@ class FileUploader
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
+        $violations = $this->validator->validate($file, [
+            new Image([
+                'mimeTypes' => ['image/png', 'image/jpeg'],
+            ]),
+        ]);
+
+//        if (count($violations) > 0) {
+//            throw new \RuntimeException(implode(', ', $violations));
+//        }
+
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-// ... handle exception if something happens during file upload
+            dump($e->getMessage());
         }
 
         return $fileName;

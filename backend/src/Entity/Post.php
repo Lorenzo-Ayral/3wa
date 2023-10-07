@@ -3,8 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post as ApiPost;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Delete;
+use App\Controller\PostController;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +19,19 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new ApiPost(
+            controller: PostController::class,
+        ),
+        new Get(
+            controller: PostController::class,
+        ),
+        new GetCollection(),
+        new Delete()
+
+    ]
+)]
 #[ApiFilter(SearchFilter::class, properties: ['author' => 'exact'])]
 class Post
 {

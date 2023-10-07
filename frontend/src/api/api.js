@@ -109,13 +109,21 @@ export const deleteUserPost = (postId) => {
 }
 
 
-export const createPost = async (image, content) => {
+export const createPost = async (content, picture) => {
     const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
     try {
-        const response = await api.post(
-            'posts',
-            {image, content, author: authorId},
-        );
+        const data = {
+            content,
+            author: authorId,
+            picture: picture ? await pictureToBase64(picture) : null, // Convert to base64 if picture exists
+        };
+
+        const response = await api.post('posts', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
         console.log('Post créé avec succès :', response.data);
         return response.data;
     } catch (error) {
@@ -123,3 +131,47 @@ export const createPost = async (image, content) => {
         throw error;
     }
 };
+
+function pictureToBase64(picture) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(picture);
+    });
+}
+
+export const getComments = () => {
+    return api.get('comments')
+        .then((response) => response.data['hydra:member'])
+        .catch((error) => {
+            console.error('Erreur lors de la récupération des commentaires :', error);
+            throw error;
+        });
+}
+
+export const createComment = async (content, postId) => {
+    const authorId = '/api/users/' + jwt_decode(localStorage.getItem('jwtToken')).userId;
+    const post = '/api/posts/' + postId;
+    try {
+        const response = await api.post(
+            'comments',
+            {content, user: authorId, post, createdAt: new Date()},
+        );
+        console.log('Commentaire créé avec succès :', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors de la création du commentaire :', error);
+        throw error;
+    }
+}
+
+export const deleteComment = (commentId) => {
+    return api.delete('comments/' + commentId)
+        .catch((error) => {
+            console.error('Erreur lors de la suppression du commentaire :', error);
+            throw error;
+        });
+}

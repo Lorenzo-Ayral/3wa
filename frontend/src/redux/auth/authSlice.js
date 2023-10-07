@@ -12,6 +12,17 @@ const getRoleFromToken = () => {
     return null;
 };
 
+const getIdFromToken = () => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+        const decodedToken = jwt_decode(jwtToken);
+        if (decodedToken && decodedToken.userId) {
+            return decodedToken.userId;
+        }
+    }
+    return null;
+}
+
 const initialState = {
     isAuthenticated: !!localStorage.getItem('jwtToken'),
     role: getRoleFromToken(),
@@ -24,6 +35,7 @@ const authSlice = createSlice({
         loginSuccess: (state) => {
             state.isAuthenticated = true;
             state.role = getRoleFromToken();
+            state.id = getIdFromToken();
         },
         logoutSuccess: (state) => {
             state.isAuthenticated = false;

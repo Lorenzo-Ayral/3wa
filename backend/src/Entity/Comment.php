@@ -43,6 +43,16 @@ class Comment
         return $this->user;
     }
 
+    public function getAuthorUsername(): ?string
+    {
+        return $this->user->getUsername();
+    }
+
+    public function getPostId(): ?int
+    {
+        return $this->post->getId();
+    }
+
     public function setUser(?User $user): static
     {
         $this->user = $user;

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Post;
-//use App\Service\FileUploader;
+use App\Entity\User;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,35 +15,62 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PostController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-//    private FileUploader $fileUploader;
+    private FileUploader $fileUploader;
 
     public function __construct(
-        EntityManagerInterface $entityManager
-//        , FileUploader $fileUploader
+        EntityManagerInterface $entityManager, FileUploader $fileUploader
     )
     {
         $this->entityManager = $entityManager;
-//        $this->fileUploader = $fileUploader;
+        $this->fileUploader = $fileUploader;
     }
 
-    #[Route('/api/posts', name: 'create_post', methods: ['POST'])]
-    public function create(Request $request): Response
+    #[Route('/api/posts', name: 'create_post', requirements: ['_format' => 'json'], methods: ['POST'])]
+    public function __invoke(Request $request, FileUploader $fileUploader): Response
     {
-        $data = json_decode($request->request->get('data'), true);
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['content']) || !isset($data['author'])) {
+            return $this->json(['message' => 'Les données JSON sont incorrectes.'], Response::HTTP_BAD_REQUEST);
+        }
+
         $content = $data['content'];
-        $authorId = $data['author'];
+        $authorPath = $data['author'];
+
+        $parts = explode('/', $authorPath);
+        $userId = end($parts);
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $author = $userRepository->find($userId);
+
+        if (!$author) {
+            return $this->json(['message' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
 
         $post = new Post();
-        $post->setAuthor($authorId);
+        $post->setAuthor($author);
         $post->setContent($content);
 
-//        $picture = $request->files->get('picture');
-//
-//        if ($picture) {
-//            $fileName = $this->fileUploader->upload($picture);
-//
-//            $post->setPicture($fileName);
-//        }
+        $pictureBase64 = $data['picture'];
+
+        if ($pictureBase64) {
+            // Décodez le contenu base64 en binaire
+            $binaryData = base64_decode($pictureBase64);
+
+            // Générez un nom de fichier unique avec une extension (par exemple, .png)
+            $fileName = uniqid() . '.png';
+
+            // Définissez le chemin complet pour le fichier
+            $filePath = $this->fileUploader->getTargetDirectory() . '/' . $fileName;
+
+            // Écrivez le contenu binaire dans le fichier
+            file_put_contents($filePath, $binaryData);
+
+            // Stockez le nom du fichier dans la base de données
+            $post->setPicture($fileName);
+        } else {
+            $post->setPicture(null);
+        }
 
         $post->setCreatedAt(new \DateTimeImmutable());
 
@@ -50,6 +79,10 @@ class PostController extends AbstractController
 
         return $this->json($post, Response::HTTP_CREATED);
     }
+
+
+
+
 
     #[Route('/api/posts', name: 'get_posts', methods: ['GET'])]
     public function index(): Response
@@ -60,7 +93,7 @@ class PostController extends AbstractController
         foreach ($posts as $post) {
             $postData = [
                 'id' => $post->getId(),
-//                'picture' => $post->getPicture(),
+                'picture' => $post->getPicture(),
                 'content' => $post->getContent(),
                 'author' => $post->getAuthor()->getUsername(),
                 'created_at' => $post->getCreatedAt(),

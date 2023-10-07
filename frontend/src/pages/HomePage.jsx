@@ -6,7 +6,7 @@ export const HomePage = () => {
     return (
         <>
             <CreatePostForm/>
-            <PostList/>
+            <PostList mode="AllPosts"/>
         </>
     )
 }
