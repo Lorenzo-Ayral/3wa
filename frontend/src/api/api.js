@@ -132,7 +132,6 @@ export const createPost = async (content, picture) => {
     }
 };
 
-// Function to convert a File object to base64
 function pictureToBase64(picture) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -167,4 +166,12 @@ export const createComment = async (content, postId) => {
         console.error('Erreur lors de la création du commentaire :', error);
         throw error;
     }
+}
+
+export const deleteComment = (commentId) => {
+    return api.delete('comments/' + commentId)
+        .catch((error) => {
+            console.error('Erreur lors de la suppression du commentaire :', error);
+            throw error;
+        });
 }

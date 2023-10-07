@@ -1,18 +1,29 @@
 import {useEffect, useState} from "react";
-import {getUserPosts, deleteUserPost, getPosts, getComments, createComment, createPost} from "../../api/api.js";
+import {
+    getUserPosts,
+    deleteUserPost,
+    getPosts,
+    getComments,
+    createComment,
+    deleteComment
+} from "../../api/api.js";
 import "moment/locale/fr";
 import {format} from "date-fns";
 import {fr} from "date-fns/locale";
 import Modal from "../Modal/Modal.jsx";
+import {useSelector} from "react-redux";
 
 function PostList({mode}) {
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([])
     const [modalIsOpenDeletePost, setModalIsOpenDeletePost] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
+    const [commentIdToDelete, setCommentIdToDelete] = useState(null)
     const [modalIsOpenCommentPost, setModalIsOpenCommentPost] = useState(false);
+    const [modalIsOpenDeleteComment, setModalIsOpenDeleteComment] = useState(false)
     const [postIdToComment, setPostIdToComment] = useState(null);
     const [content, setContent] = useState('');
+    const userId = "/api/users/" + useSelector((state) => state.auth.id);
 
     useEffect(() => {
         if (mode === "UserPosts") {
@@ -67,6 +78,10 @@ function PostList({mode}) {
         }
     };
 
+    const handleDeleteComment = () => {
+        deleteComment(commentIdToDelete)
+    }
+
 
     const openModalDeletePost = (postId) => {
         setPostIdToDelete(postId);
@@ -86,6 +101,16 @@ function PostList({mode}) {
     const closeModalCommentPost = () => {
         setPostIdToComment(null);
         setModalIsOpenCommentPost(false);
+    }
+
+    const openModalDeleteComment = (commentId) => {
+        setCommentIdToDelete(commentId);
+        setModalIsOpenDeleteComment(true);
+    }
+
+    const closeModalDeleteComment = () => {
+        setCommentIdToDelete(null);
+        setModalIsOpenDeletePost(true);
     }
 
     return (
@@ -122,12 +147,15 @@ function PostList({mode}) {
                                             <li key={comment.id}>
                                                 <strong>Créé par</strong> {comment.authorUsername}
                                                 <br/>
-                                                <strong>Contenu</strong> {comment.content}
+                                                <strong>Contenu</strong> {comment.user}
                                                 <br/>
                                                 <strong>Crée le</strong>{" "}
                                                 {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
                                                     locale: fr,
                                                 })}
+                                                {userId === comment.user && (
+                                                <button onClick={() => openModalDeleteComment(comment.id)}>Supprimer</button>
+                                                    )}
                                             </li>
                                         ))
                                 ) : (
@@ -166,6 +194,15 @@ function PostList({mode}) {
                             />
                         </>
                     }
+                />
+            )}
+            {modalIsOpenDeleteComment && (
+                <Modal
+                    modalIsOpen={modalIsOpenDeleteComment}
+                    closeModal={closeModalDeleteComment}
+                    modalConfirm={handleDeleteComment}
+                    modalTitle="Supprimer un commentaire"
+                    modalBody="Êtes-vous sûr de vouloir supprimer ce commentaire ?"
                 />
             )}
         </div>
