@@ -3,16 +3,11 @@ $color-primary: #eee;
 $color-secondary: #000;
 $size-button: 30px;
 
-// Styles
-.navMobile {
-  display: none;
-}
-
 .navBurgerButton {
   position: fixed;
   top: 20px;
-  right: 20px;
-  z-index: 10;
+  left: 30px;
+  z-index: 11;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -32,6 +27,10 @@ $size-button: 30px;
   background-color: $color-secondary;
   z-index: 10;
   display: none;
+}
+
+ul {
+  padding-top: 30px;
 }
 
 .navItemMobile {
@@ -59,9 +58,9 @@ $size-button: 30px;
   display: block;
 }
 
-//@media (min-width: 768px) {
-//  .nav {
-//    display: none;
-//  }
-//}
+@media (min-width: 768px) {
+  nav {
+    display: none;
+  }
+}
 

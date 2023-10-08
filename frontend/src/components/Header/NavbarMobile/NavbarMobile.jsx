@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import styles from "../../../css/components/Header/NavbarMobile/NavbarMobile.module.css";
 import {useSelector} from "react-redux";
 import {useState} from "react";
+import {GiHamburgerMenu} from "react-icons/gi";
 
 const NavbarMobile = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -10,49 +11,35 @@ const NavbarMobile = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleOpenMenu = () => {
-        setIsOpen(true);
-    };
-
-    const handleCloseMenu = () => {
-        setIsOpen(false);
+        setIsOpen(!isOpen);
     };
 
     return (
         <nav className={styles.navMobile}>
             <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
-               Ouvrir
+                <GiHamburgerMenu />
             </button>
             <ul className={styles.navListMobile} style={{display: isOpen ? "block" : "none"}}>
                 <li className={styles.navItemMobile}>
-                    <Link to="/" className={styles.navLinkMobile}>
+                    <Link to="/" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
                         Accueil
-                    </Link>
-                </li>
-                <li className={styles.navItemMobile}>
-                    <Link to="/about" className={styles.navLinkMobile}>
-                        À propos
-                    </Link>
-                </li>
-                <li className={styles.navItemMobile}>
-                    <Link to="/contact" className={styles.navLinkMobile}>
-                        Contact
                     </Link>
                 </li>
                 {isAuthenticated ? (
                     <li className={styles.navItemMobile}>
-                        <Link to="/profil" className={styles.navLinkMobile}>
+                        <Link to="/profil" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
                             Profil
                         </Link>
                     </li>
                 ) : (
                     <>
                         <li className={styles.navItemMobile}>
-                            <Link to="/login" className={styles.navLinkMobile}>
+                            <Link to="/login" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
                                 Connexion
                             </Link>
                         </li>
                         <li className={styles.navItemMobile}>
-                            <Link to="/inscription" className={styles.navLinkMobile}>
+                            <Link to="/inscription" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
                                 Inscription
                             </Link>
                         </li>
@@ -60,7 +47,7 @@ const NavbarMobile = () => {
                 )}
                 {isAdmin === "ROLE_ADMIN" && (
                     <li className={styles.navItemMobile}>
-                        <Link to="/admin" className={styles.navLinkMobile}>
+                        <Link to="/admin" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
                             Admin
                         </Link>
                     </li>
