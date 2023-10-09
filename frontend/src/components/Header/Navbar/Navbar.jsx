@@ -14,16 +14,6 @@ const Navbar = () => {
                         Accueil
                     </Link>
                 </li>
-                <li className={styles.navItem}>
-                    <Link to="/about" className={styles.navLink}>
-                        À propos
-                    </Link>
-                </li>
-                <li className={styles.navItem}>
-                    <Link to="/contact" className={styles.navLink}>
-                        Contact
-                    </Link>
-                </li>
                 {isAuthenticated ? (
                     <li className={styles.navItem}>
                         <Link to="/profil" className={styles.navLink}>

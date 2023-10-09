@@ -12,6 +12,8 @@ import {format} from "date-fns";
 import {fr} from "date-fns/locale";
 import Modal from "../Modal/Modal.jsx";
 import {useSelector} from "react-redux";
+import styles from "../../css/components/PostList/PostList.module.css";
+import {FaTrashAlt} from "react-icons/fa";
 
 function PostList({mode}) {
     const [posts, setPosts] = useState([]);
@@ -123,52 +125,53 @@ function PostList({mode}) {
     return (
         <div>
             <h2>Posts</h2>
-            <ul>
+            <ul className={styles["post-list"]}>
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <li key={post.id}>
-                            <h3>Voici un post</h3>
+                        <li key={post.id} className={styles["post-item"]}>
+                            {mode === "UserPosts" && (
+                                <button className={styles["delete-button"]} onClick={() => openModalDeletePost(post.id)} style={{display: "block"}}>
+                                    <FaTrashAlt/>
+                                </button>
+                            )}
+                            {/*<strong>Image :<img alt="" src={post.picture} /></strong>*/}
+                            <strong>{post.authorUsername}</strong>
                             <br />
-                            <strong>Image :<img alt="" src={post.picture}></img></strong>
-                            <br/>
-                            <strong>Créé par</strong> {post.authorUsername}
-                            <br/>
-                            <strong>Contenu</strong> {post.content}
-                            <br/>
-                            <strong>Crée le</strong>{" "}
-                            {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                            {post.content}
+                            <br />
+                            le {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
                                 locale: fr,
                             })}
-                            {mode === "UserPosts" && (
-                                <button onClick={() => openModalDeletePost(post.id)}>Supprimer</button>
-                            )}
+                            <br/>
 
-                            <h4 style={{marginTop: "10px"}}>Commentaires</h4>
-                            <ul style={{marginBottom: "30px"}}>
+                            <h4>Commentaires</h4>
+                            <ul className={styles.comments}>
                                 {comments
                                     .filter((comment) => comment.postId === post.id)
                                     .length > 0 ? (
                                     comments
                                         .filter((comment) => comment.postId === post.id)
                                         .map((comment) => (
-                                            <li key={comment.id}>
-                                                <strong>Créé par</strong> {comment.authorUsername}
-                                                <br/>
-                                                <strong>Contenu</strong> {comment.content}
-                                                <br/>
-                                                <strong>Crée le</strong>{" "}
-                                                {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                            <li key={comment.id} className={styles["comment-item"]}>
+                                                <strong>{comment.authorUsername}</strong> à répondu :
+                                                <br />
+                                                {comment.content}
+                                                <br />
+                                                le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
                                                     locale: fr,
                                                 })}
+                                                <br/>
                                                 {userId === comment.user && (
-                                                <button onClick={() => openModalDeleteComment(comment.id)}>Supprimer</button>
-                                                    )}
+                                                    <button className={styles["delete-button"]} onClick={() => openModalDeleteComment(comment.id)}>
+                                                        <FaTrashAlt/>
+                                                    </button>
+                                                )}
                                             </li>
                                         ))
                                 ) : (
                                     <li>Aucun commentaire pour le moment</li>
                                 )}
-                                <button onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire</button>
+                                <button className={styles["submit-button"]} onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire</button>
                             </ul>
                         </li>
                     ))

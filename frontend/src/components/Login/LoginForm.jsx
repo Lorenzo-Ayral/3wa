@@ -9,7 +9,7 @@ const LoginForm = () => {
         username: '',
         password: '',
     });
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState([]);
     const [redirectToProfile, setRedirectToProfile] = useState(false);
     const dispatch = useDispatch();
 
@@ -33,6 +33,7 @@ const LoginForm = () => {
             dispatch(loginSuccess())
             setRedirectToProfile(true);
         } catch (error) {
+            setErrors(error);
             console.error('Erreur lors de la connexion :', error);
         }
     };
@@ -60,7 +61,7 @@ const LoginForm = () => {
                         value={formData.password}
                         onChange={handleChange}
                     />
-                    {errors && <div className="error">Erreur lors de la connexion</div>}
+                    {errors && <div className="error">{errors}</div>}
                 </div>
                 <button type="submit">Se connecter</button>
             </form>

@@ -15,7 +15,7 @@ const NavbarMobile = () => {
     };
 
     return (
-        <nav className={styles.navMobile}>
+        <nav>
             <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
                 <GiHamburgerMenu />
             </button>
