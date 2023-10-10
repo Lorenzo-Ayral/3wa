@@ -130,18 +130,19 @@ function PostList({mode}) {
                     posts.map((post) => (
                         <li key={post.id} className={styles["post-item"]}>
                             {mode === "UserPosts" && (
-                                <button className={styles["delete-button"]} onClick={() => openModalDeletePost(post.id)} style={{display: "block"}}>
+                                <button className={styles["delete-button"]} onClick={() => openModalDeletePost(post.id)}
+                                        style={{display: "block"}}>
                                     <FaTrashAlt/>
                                 </button>
                             )}
                             {/*<strong>Image :<img alt="" src={post.picture} /></strong>*/}
                             <strong>{post.authorUsername}</strong>
-                            <br />
+                            <br/>
                             {post.content}
-                            <br />
+                            <br/>
                             le {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
-                                locale: fr,
-                            })}
+                            locale: fr,
+                        })}
                             <br/>
 
                             <h4>Commentaires</h4>
@@ -154,15 +155,16 @@ function PostList({mode}) {
                                         .map((comment) => (
                                             <li key={comment.id} className={styles["comment-item"]}>
                                                 <strong>{comment.authorUsername}</strong> à répondu :
-                                                <br />
+                                                <br/>
                                                 {comment.content}
-                                                <br />
+                                                <br/>
                                                 le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
-                                                    locale: fr,
-                                                })}
+                                                locale: fr,
+                                            })}
                                                 <br/>
                                                 {userId === comment.user && (
-                                                    <button className={styles["delete-button"]} onClick={() => openModalDeleteComment(comment.id)}>
+                                                    <button className={styles["delete-button"]}
+                                                            onClick={() => openModalDeleteComment(comment.id)}>
                                                         <FaTrashAlt/>
                                                     </button>
                                                 )}
@@ -171,7 +173,9 @@ function PostList({mode}) {
                                 ) : (
                                     <li>Aucun commentaire pour le moment</li>
                                 )}
-                                <button className={styles["submit-button"]} onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire</button>
+                                <button className={styles["submit-button"]}
+                                        onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire
+                                </button>
                             </ul>
                         </li>
                     ))
@@ -195,14 +199,11 @@ function PostList({mode}) {
                     modalConfirm={handleCommentPost}
                     modalTitle="Ajouter un commentaire"
                     modalBody={
-                        <>
-                            <label>Contenu du post :</label>
-                            <textarea
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                required
-                            />
-                        </>
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            required
+                        />
                     }
                 />
             )}

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {deleteUser, getUsers} from "../../api/api.js";
 import Modal from "../Modal/Modal";
+import styles from "../../css/components/UserList/UserList.module.css";
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -41,7 +42,7 @@ function UserList() {
     };
 
     return (
-        <div>
+        <div className={styles["user-list"]}>
             <h2>Liste des utilisateurs</h2>
             <ul>
                 {users && users.map((user) => (
@@ -51,6 +52,7 @@ function UserList() {
                         <strong>Nom complet :</strong> {user.first_name} {user.last_name}
                         <br/>
                         <strong>Email :</strong> {user.email}
+                        <br/>
                         <button onClick={() => openModal(user.id)}>Supprimer l'utilisateur</button>
                     </li>
                 ))}

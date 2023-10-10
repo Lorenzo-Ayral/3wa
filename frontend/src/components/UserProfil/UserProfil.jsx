@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { getProfile, updateUser } from "../../api/api.js";
 import Modal from "../Modal/Modal.jsx";
+import styles from "../../css/components/UserProfil/UserProfil.module.css";
 
 function UserProfil() {
     const [userData, setUserData] = useState({});
@@ -76,14 +77,23 @@ function UserProfil() {
 
     return (
         <>
-            <div>
+            <div className={styles["user-profile"]}>
                 <h2>Profil de l'utilisateur</h2>
-                <p>Photo de profil : {userData.profilePicture}</p>
+                {/*<img*/}
+                {/*    src={userData.profilePicture}*/}
+                {/*    alt="Photo de profil"*/}
+                {/*    className={styles["profile-picture"]}*/}
+                {/*/>*/}
                 <p>Nom d'utilisateur : {userData.username}</p>
                 <p>Prénom : {userData.firstName}</p>
                 <p>Nom : {userData.lastName}</p>
                 <p>Email : {userData.email}</p>
-                <button onClick={openModal}>Mettre à jour mon profil</button>
+                <button
+                    onClick={openModal}
+                    className={styles["update-button"]}
+                >
+                    Mettre à jour mon profil
+                </button>
             </div>
             {modalIsOpen && (
                 <Modal
@@ -92,7 +102,7 @@ function UserProfil() {
                     modalConfirm={handleUpdateUser}
                     modalTitle="Mettre à jour mon profil"
                     modalBody={
-                        <>
+                        <form className={styles["update-user-profile-form"]}>
                             <label>Nouveau nom d'utilisateur:</label>
                             <input type="text" name="username" value={newUserData.username} onChange={handleChange} />
 
@@ -110,7 +120,7 @@ function UserProfil() {
 
                             <label>Confirmer le nouveau mot de passe:</label>
                             <input type="password" name="passwordConfirm" value={newUserData.passwordConfirm} onChange={handleChange} />
-                        </>
+                        </form>
                     }
                 />
             )}

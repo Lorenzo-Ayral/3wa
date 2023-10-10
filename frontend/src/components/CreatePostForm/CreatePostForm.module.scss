@@ -69,3 +69,8 @@
     margin-top: 16px;
   }
 }
+@media (max-width: 767px) {
+  .createPostForm {
+    margin : 0 10px;
+  }
+}
