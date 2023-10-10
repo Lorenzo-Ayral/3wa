@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import {authenticate} from "../../api/api.js";
 import { useDispatch } from 'react-redux';
 import {loginSuccess} from "../../redux/auth/authSlice.js";
+import styles from '../../css/components/Login/LoginForm.module.css';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -39,7 +40,7 @@ const LoginForm = () => {
     };
 
     return (
-        <>
+        <div className={styles["form"]}>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Nom d'utilisateur</label>
@@ -66,7 +67,7 @@ const LoginForm = () => {
                 <button type="submit">Se connecter</button>
             </form>
             {redirectToProfile && <Navigate to="/profil"/>}
-        </>
+        </div>
     );
 };
 
