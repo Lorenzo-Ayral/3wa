@@ -3,7 +3,7 @@ import CreateUserForm from "../components/CreateUserForm/CreateUserForm.jsx";
 function CreateUserPage() {
     return (
         <div>
-            <h1>Create User Page</h1>
+            <h1>Créer mon profil</h1>
             <CreateUserForm/>
         </div>
     );
