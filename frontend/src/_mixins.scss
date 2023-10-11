@@ -1,0 +1,64 @@
+@import "variables";
+
+@mixin submit-button {
+  background-color: $background-button;
+  color: $greenish;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $background-button-hover;
+  }
+}
+
+@mixin delete-button {
+  background-color: $delete-button-color;
+  color: $greenish;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $delete-button-hover-color;
+  }
+}
+
+@mixin card {
+  width: calc(47% - 20px);
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  background-color: $background-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@mixin nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: $text-color;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@mixin navList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+@mixin navItem {
+  margin-right: 3rem;
+}
+
+@mixin navLink {
+  text-decoration: none;
+  color: $primaryLight;
+}

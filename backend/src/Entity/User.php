@@ -34,13 +34,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             write: true,
         ),
         new Delete(),
-        new Patch(
-//            controller: UserController::class,
-//            normalizationContext: ['groups' => ['read']],
-//            denormalizationContext: ['groups' => ['write']],
-//            read: false,
-//            write: true,
-        )
+        new Patch()
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],

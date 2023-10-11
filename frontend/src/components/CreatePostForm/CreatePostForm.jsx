@@ -1,59 +1,57 @@
-import { useState } from 'react';
+import {useState} from "react";
 import {createPost} from "../../api/api.js";
-
+import styles from "../../css/components/CreatePostForm/CreatePostForm.module.css";
+import {FaFeatherAlt} from "react-icons/fa";
 const CreatePostForm = () => {
-    const [content, setContent] = useState('');
+    const [content, setContent] = useState("");
     const [picture, setPicture] = useState(null);
-    const [error, setError] = useState(null);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(content, picture)
-            const response = await createPost(content, picture);
-            console.log('Post créé avec succès:', response);
+            await createPost(content, picture);
             setPicture(null);
-            setContent('');
-            setError(null);
-        } catch (err) {
-            setError('Veuillez vous connecter pour poster');
-            console.error('Erreur:', err);
+            setContent("");
+        } catch (error) {
+            console.error("Erreur:", error);
+            return alert("Erreur lors de la création du post:");
         }
     };
 
-
-    const handleImageChange = (e) => {
-        const selectedImage = e.target.files[0];
-        setPicture(selectedImage);
-    };
+    // const handleImageChange = (e) => {
+    //     const selectedImage = e.target.files[0];
+    //     setPicture(selectedImage);
+    // };
 
     return (
-        <div>
-            <h2>Créer un post</h2>
-            {error && <div className="error">{error}</div>}
-            <form onSubmit={handleSubmit} >
+        <>
+            <form onSubmit={handleSubmit} className={styles.createPostForm}>
+                <h2>Liberate cogitationes vestras !</h2>
                 <div>
-                    <label>Image :</label>
-                    <input
-                        name="picture"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                    />
+          <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              className={styles.content}
+          />
                 </div>
+                {/*<div>*/}
+                {/*    <label htmlFor="picture">Image :</label>*/}
+                {/*    <input*/}
+                {/*        type="file"*/}
+                {/*        accept="image/*"*/}
+                {/*        onChange={handleImageChange}*/}
+                {/*        id="picture"*/}
+                {/*    />*/}
+                {/*</div>*/}
                 <div>
-                    <label>Contenu du post :</label>
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <button type="submit">Créer le post</button>
+                    <button type="submit" className={styles["submit-button"]}>
+                        Déclamer ma prose <FaFeatherAlt/>
+                    </button>
                 </div>
             </form>
-        </div>
+        </>
     );
 };
 

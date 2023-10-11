@@ -14,7 +14,7 @@ function Modal({ modalIsOpen, closeModal, modalTitle, modalBody, modalConfirm })
                         </button>
                     </div>
                     <div className={styles["modal-body"]}>
-                        <p>{modalBody}</p>
+                        <>{modalBody}</>
                     </div>
                     <div className={styles["modal-footer"]}>
                         <button type="button" className={styles.btn + " " + styles["btn-secondary"]} onClick={closeModal}>

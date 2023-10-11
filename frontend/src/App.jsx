@@ -10,6 +10,9 @@ import {useSelector} from 'react-redux';
 import CreateUserPage from "./pages/CreateUserPage";
 import Page404 from "./pages/Page404";
 import AdminPage from "./pages/AdminPage";
+import "@fontsource/montserrat";
+import "@fontsource/satisfy";
+import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -28,6 +31,7 @@ function App() {
                 <Route path="/admin" element={isAdmin === "ROLE_ADMIN" ? <AdminPage/> : <Navigate to="/404"/>}/>
                 <Route path="/404" element={<Page404/>}/>
             </Routes>
+            <Footer/>
         </BrowserRouter>
     )
 }

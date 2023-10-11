@@ -1,10 +1,11 @@
 function AboutPage() {
     return (
-        <div>
-            <h2>À propos de nous</h2>
+        <div style={{height: "82vh"}}>
+            <h1>À propos de nous</h1>
             <p>
-                Bienvenue sur notre site web "À propos de nous". Ici, vous pouvez en apprendre davantage sur notre entreprise
-                et notre équipe.
+                Bienvenue sur notre site web "RézoFilo".
+                <br/>
+                Ce site est ouvert à toutes les personnes aillant à coeur le partage et l'amour de la philosophie potache.
             </p>
         </div>
     );

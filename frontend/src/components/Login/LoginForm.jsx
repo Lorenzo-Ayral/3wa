@@ -3,13 +3,13 @@ import { Navigate } from 'react-router-dom';
 import {authenticate} from "../../api/api.js";
 import { useDispatch } from 'react-redux';
 import {loginSuccess} from "../../redux/auth/authSlice.js";
+import styles from '../../css/components/Login/LoginForm.module.css';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
-    const [errors, setErrors] = useState({});
     const [redirectToProfile, setRedirectToProfile] = useState(false);
     const dispatch = useDispatch();
 
@@ -34,11 +34,13 @@ const LoginForm = () => {
             setRedirectToProfile(true);
         } catch (error) {
             console.error('Erreur lors de la connexion :', error);
+            return alert("Erreur lors de la connexion");
         }
     };
 
     return (
-        <>
+        <div className={styles["form"]}>
+            <h1>Se connecter</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Nom d'utilisateur</label>
@@ -49,7 +51,6 @@ const LoginForm = () => {
                         value={formData.username}
                         onChange={handleChange}
                     />
-                    {errors.username && <div className="error">{errors.username}</div>}
                 </div>
                 <div>
                     <label htmlFor="password">Mot de passe</label>
@@ -60,12 +61,11 @@ const LoginForm = () => {
                         value={formData.password}
                         onChange={handleChange}
                     />
-                    {errors && <div className="error">Erreur lors de la connexion</div>}
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
             {redirectToProfile && <Navigate to="/profil"/>}
-        </>
+        </div>
     );
 };
 

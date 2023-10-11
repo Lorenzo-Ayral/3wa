@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {createUser} from "../../api/api.js";
 import Moment from 'moment';
 import {Navigate} from "react-router-dom";
+import styles from "../../css/components/Login/LoginForm.module.css";
 
 function CreateUserForm() {
     const [username, setUsername] = useState('');
@@ -32,38 +33,57 @@ function CreateUserForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Nom d'utilisateur :
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-            </label>
-            <label>
-                Adresse email :
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            </label>
-            <label>
-                Prénom :
-                <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
-            </label>
-            <label>
-                Nom de famille :
-                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-            </label>
-            <label>
-                Date de naissance :
-                <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}/>
-            </label>
-            <label>
-                Mot de passe :
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-            </label>
-            <label>
-                Confirmer le mot de passe :
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-            </label>
-            <input type="submit" value="Créer un utilisateur"/>
-            {redirectToLogin && <Navigate to="/login"/>}
-        </form>
+        <div className={styles["form"]}>
+            <h1>Créer mon profil</h1>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>
+                        Nom d'utilisateur :
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Adresse email :
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Prénom :
+                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Nom de famille :
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Date de naissance :
+                        <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Mot de passe :
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Confirmer le mot de passe :
+                        <input type="password" value={confirmPassword}
+
+                               onChange={(e) => setConfirmPassword(e.target.value)}/>
+                    </label>
+                </div>
+                <button type="submit">Créer mon compte</button>
+                {redirectToLogin && <Navigate to="/login"/>}
+            </form>
+        </div>
     );
 }
 

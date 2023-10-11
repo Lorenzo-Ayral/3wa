@@ -1,7 +1,8 @@
-@import "../../../mixins";
+@import "../../mixins";
 
 .nav {
   @include nav;
+  padding: 1.5em;
 }
 
 .navList {
@@ -14,10 +15,4 @@
 
 .navLink {
   @include navLink;
-}
-
-@media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
 }

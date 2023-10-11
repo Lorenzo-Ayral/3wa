@@ -1,0 +1,32 @@
+@import '../../variables';
+@import "../../mixins";
+
+.user-list {
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    li {
+        @include card;
+
+      button {
+        @include delete-button
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    ul li {
+      width: 100%;
+      margin: 10px 10px;
+    }
+  }
+}

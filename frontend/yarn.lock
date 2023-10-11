@@ -369,6 +369,21 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.48.0.tgz#642633964e217905436033a2bd08bf322849b7fb"
   integrity sha512-ZSjtmelB7IJfWD2Fvb7+Z+ChTIKWq6kjda95fLcQKNS5aheVHn4IkfgRQE3sIIzTcSLwLcLZUD9UBt+V7+h+Pw==
 
+"@fontsource/dancing-script@^5.0.13":
+  version "5.0.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/dancing-script/-/dancing-script-5.0.13.tgz#e1ae321946ac64391af1e816380c4332bb9b634a"
+  integrity sha512-Xt6JFy+sIA0e32PxticmXGrS8A0WEBsaexcLzdA2ee3f8GiLQx4G434b1RTDIA+AZZ/BS0BGszOHinWxJKSpZg==
+
+"@fontsource/montserrat@^5.0.12":
+  version "5.0.12"
+  resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-5.0.12.tgz#29f67495abd46d5c95845126d466cdb2a6f33278"
+  integrity sha512-YwQ1+EQM9oXVSfJcLomjHIfVR6Xe7+2n/abx3JTYnf7EGNgR8Fe5FbV9uSuxtpmSgD2VbEkh6yV5r2CwAmSYkw==
+
+"@fontsource/satisfy@^5.0.15":
+  version "5.0.15"
+  resolved "https://registry.yarnpkg.com/@fontsource/satisfy/-/satisfy-5.0.15.tgz#c6f784a801bb53875d3a853e2f2f42de46bc8333"
+  integrity sha512-N6Fk87BEilrK0pZooNvLuOGXp6NQXuQDqeBMBHfa7EmzudGMGk97FxEItHRL2LaJdcuatuMp8l7CbJo2x7SM6g==
+
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.10.tgz#5a3ffe32cc9306365fb3fd572596cd602d5e12d2"
@@ -504,6 +519,11 @@
     "@babel/plugin-transform-react-jsx-self" "^7.22.5"
     "@babel/plugin-transform-react-jsx-source" "^7.22.5"
     react-refresh "^0.14.0"
+
+"@vitejs/plugin-vue@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-4.4.0.tgz#8ae96573236cdb12de6850a6d929b5537ec85390"
+  integrity sha512-xdguqb+VUwiRpSg+nsc2HtbAUSGak25DXYvpQQi4RVU1Xq1uworyoH/md9Rfd8zMmPR/pSghr309QNcftUVseg==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"

@@ -1,0 +1,6 @@
+@import "../../mixins";
+
+.logout-button {
+  @include delete-button;
+  margin-top : 30px;
+}
