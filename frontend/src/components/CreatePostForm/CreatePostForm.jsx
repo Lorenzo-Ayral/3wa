@@ -4,7 +4,6 @@ import styles from "../../css/components/CreatePostForm/CreatePostForm.module.cs
 const CreatePostForm = () => {
     const [content, setContent] = useState("");
     const [picture, setPicture] = useState(null);
-    const [error, setError] = useState(null);
 
 
     const handleSubmit = async (e) => {
@@ -13,10 +12,9 @@ const CreatePostForm = () => {
             await createPost(content, picture);
             setPicture(null);
             setContent("");
-            setError(null);
         } catch (error) {
-            setError(error);
             console.error("Erreur:", error);
+            return alert("Erreur lors de la création du post:");
         }
     };
 
@@ -52,7 +50,6 @@ const CreatePostForm = () => {
                     </button>
                 </div>
             </form>
-            {error && <div className={styles.error}>{error}</div>}
         </>
     );
 };

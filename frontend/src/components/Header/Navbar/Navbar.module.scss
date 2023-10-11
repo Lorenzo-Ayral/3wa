@@ -2,18 +2,20 @@
   display: flex;
   justify-content: space-between;
   background-color: #333;
-  padding: 1rem;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .navList {
   list-style: none;
   display: flex;
+  align-items: center;
   margin: 0;
   padding: 0;
 }
 
 .navItem {
-  margin-right: 1rem;
+  margin-right: 3rem;
 }
 
 .navLink {

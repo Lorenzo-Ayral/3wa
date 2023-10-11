@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
-import styles from "../../../css/components/header/Navbar/Navbar.module.css";
+import styles from "../../../css/components/Header/Navbar/Navbar.module.css";
 import {useSelector} from "react-redux";
+import logo from "../../../assets/RésoPhilo.webp";
 
 const Navbar = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -11,7 +12,7 @@ const Navbar = () => {
             <ul className={styles.navList}>
                 <li className={styles.navItem}>
                     <Link to="/" className={styles.navLink}>
-                        Accueil
+                        <img src={logo} alt="RésoPhilo" style={{width: "70px"}}/>
                     </Link>
                 </li>
                 {isAuthenticated ? (
