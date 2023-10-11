@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { getProfile, updateUser } from "../../api/api.js";
 import Modal from "../Modal/Modal.jsx";
 import styles from "../../css/components/UserProfil/UserProfil.module.css";
+import {GiWaxTablet} from "react-icons/gi";
 
 function UserProfil() {
     const [userData, setUserData] = useState({});
@@ -92,7 +93,7 @@ function UserProfil() {
                     onClick={openModal}
                     className={styles["update-button"]}
                 >
-                    Mettre à jour mon profil
+                    Mettre à jour mon profil <GiWaxTablet/>
                 </button>
             </div>
             {modalIsOpen && (

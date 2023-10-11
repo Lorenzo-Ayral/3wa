@@ -34,6 +34,7 @@ function CreateUserForm() {
 
     return (
         <div className={styles["form"]}>
+            <h1>Créer mon profil</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>

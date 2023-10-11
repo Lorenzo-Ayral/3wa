@@ -39,10 +39,12 @@
 
   .submit-button {
     @include submit-button;
+    margin-top: 10px;
   }
 
   .delete-button {
     @include delete-button;
+    margin-bottom: 20px;
   }
 
 }

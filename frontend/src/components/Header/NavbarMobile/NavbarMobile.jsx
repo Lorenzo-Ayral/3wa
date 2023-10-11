@@ -15,45 +15,48 @@ const NavbarMobile = () => {
     };
 
     return (
-        <nav>
-            <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
-                <GiHamburgerMenu />
-            </button>
-            <ul className={styles.navListMobile} style={{display: isOpen ? "block" : "none"}}>
-                <li className={styles.navItemMobile}>
-                    <Link to="/" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                        Accueil
-                    </Link>
-                </li>
-                {isAuthenticated ? (
+        <header>
+            <nav>
+                <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
+                    <GiHamburgerMenu/>
+                </button>
+                <ul className={styles.navListMobile} style={{display: isOpen ? "block" : "none"}}>
                     <li className={styles.navItemMobile}>
-                        <Link to="/profil" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                            Profil
+                        <Link to="/" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
+                            Accueil
                         </Link>
                     </li>
-                ) : (
-                    <>
+                    {isAuthenticated ? (
                         <li className={styles.navItemMobile}>
-                            <Link to="/login" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                                Connexion
+                            <Link to="/profil" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
+                                Profil
                             </Link>
                         </li>
+                    ) : (
+                        <>
+                            <li className={styles.navItemMobile}>
+                                <Link to="/login" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
+                                    Connexion
+                                </Link>
+                            </li>
+                            <li className={styles.navItemMobile}>
+                                <Link to="/inscription" className={styles.navLinkMobile}
+                                      onClick={() => setIsOpen(false)}>
+                                    Inscription
+                                </Link>
+                            </li>
+                        </>
+                    )}
+                    {isAdmin === "ROLE_ADMIN" && (
                         <li className={styles.navItemMobile}>
-                            <Link to="/inscription" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                                Inscription
+                            <Link to="/admin" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
+                                Admin
                             </Link>
                         </li>
-                    </>
-                )}
-                {isAdmin === "ROLE_ADMIN" && (
-                    <li className={styles.navItemMobile}>
-                        <Link to="/admin" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                            Admin
-                        </Link>
-                    </li>
-                )}
-            </ul>
-        </nav>
+                    )}
+                </ul>
+            </nav>
+        </header>
     );
 };
 

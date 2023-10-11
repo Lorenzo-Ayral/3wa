@@ -1,14 +1,14 @@
 function ContactPage() {
     return (
-        <div>
-            <h2>Contactez-nous</h2>
+        <div style={{height: "82vh"}}>
+            <h1>Contactez-nous</h1>
             <p>
                 Vous pouvez nous contacter en utilisant les coordonnées ci-dessous :
             </p>
             <ul>
-                <li>Email : contact@exemple.com</li>
-                <li>Téléphone : +1234567890</li>
-                <li>Adresse : 123 Rue de la Paix, Paris, France</li>
+                <li><strong>Email : lorenzo.ayral@gmail.com</strong></li>
+                <br/>
+                <li><strong>Profil GitHub : <a href="https://github.com/Lorenzo-Ayral">Lorenzo Ayral</a></strong></li>
             </ul>
         </div>
     );

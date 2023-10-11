@@ -40,6 +40,7 @@ const LoginForm = () => {
 
     return (
         <div className={styles["form"]}>
+            <h1>Se connecter</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Nom d'utilisateur</label>

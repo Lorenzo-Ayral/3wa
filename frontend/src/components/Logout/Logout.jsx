@@ -1,6 +1,7 @@
 import {useDispatch} from "react-redux";
 import {logout} from "../../api/api.js";
 import {logoutSuccess} from "../../redux/auth/authSlice.js";
+import styles from "../../css/components/Logout/Logout.module.css";
 
 const LogoutForm = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const LogoutForm = () => {
 
     return (
         <div>
-            <button onClick={handleLogout}>Déconnexion</button>
+            <button onClick={handleLogout} className={styles["logout-button"]}>Déconnexion</button>
         </div>
     );
 };
