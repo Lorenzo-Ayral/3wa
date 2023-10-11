@@ -11,7 +11,7 @@ import CreateUserPage from "./pages/CreateUserPage";
 import Page404 from "./pages/Page404";
 import AdminPage from "./pages/AdminPage";
 import "@fontsource/montserrat";
-import "@fontsource/dancing-script";
+import "@fontsource/satisfy";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {

@@ -6,11 +6,11 @@ const ProfilePage = () => {
 
 
     return (
-        <>
+        <div style={{height: "82vh"}}>
             <UserProfil/>
             <PostList mode="UserPosts" postTitle="Vos brillantes réflexions"/>
             <Logout/>
-        </>
+        </div>
     );
 };
 

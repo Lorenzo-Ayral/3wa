@@ -379,6 +379,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-5.0.12.tgz#29f67495abd46d5c95845126d466cdb2a6f33278"
   integrity sha512-YwQ1+EQM9oXVSfJcLomjHIfVR6Xe7+2n/abx3JTYnf7EGNgR8Fe5FbV9uSuxtpmSgD2VbEkh6yV5r2CwAmSYkw==
 
+"@fontsource/satisfy@^5.0.15":
+  version "5.0.15"
+  resolved "https://registry.yarnpkg.com/@fontsource/satisfy/-/satisfy-5.0.15.tgz#c6f784a801bb53875d3a853e2f2f42de46bc8333"
+  integrity sha512-N6Fk87BEilrK0pZooNvLuOGXp6NQXuQDqeBMBHfa7EmzudGMGk97FxEItHRL2LaJdcuatuMp8l7CbJo2x7SM6g==
+
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.10.tgz#5a3ffe32cc9306365fb3fd572596cd602d5e12d2"
