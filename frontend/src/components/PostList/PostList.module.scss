@@ -1,16 +1,23 @@
 @import '../../_mixins';
 
+.second-title {
+  margin: 3em 0 2em 0;
+}
+
 .post-list {
   list-style: none;
   padding: 0;
+  text-align: left;
 }
 
 .post-item {
   @include card;
 
-  h3 {
-    font-size: 18px;
-    margin-top: 0;
+  .content  {
+    font-family: $fontFamilyContent;
+    font-size: 1.8rem;
+    padding: 5px;
+    margin: 5px;
   }
 
   img {
@@ -27,7 +34,7 @@
   .comment-item {
     margin-bottom: 10px;
     padding: 10px;
-
+    border-top: 1px solid rgba(128, 128, 128, 0.82);
   }
 
   .submit-button {

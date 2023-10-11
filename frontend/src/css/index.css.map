@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAA,IAAK,CACH,MAAM,CAAE,CAAC,CACT,WAAW,CAAE,iJAEH,CACV,sBAAsB,CAAE,WAAW,CACnC,uBAAuB,CAAE,SAAS",
-"sources": ["../app/src/frontend/index.scss"],
+"mappings": "AAEA,IAAK,CACH,MAAM,CAAE,CAAC,CACT,WAAW,CCJC,YAAY,CDKxB,sBAAsB,CAAE,WAAW,CACnC,uBAAuB,CAAE,SAAS,CAClC,gBAAgB,CCCA,OAAO",
+"sources": ["../app/src/frontend/index.scss","../app/src/frontend/_variables.scss"],
 "names": [],
 "file": "index.css"
 }

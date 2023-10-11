@@ -16,7 +16,7 @@
     margin: 0 700px;
     background: rgba(238, 143, 14, 0.7);
     border-radius: 50px;
-    transition: transform 1s ease-in-out;
+    transition: transform 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     transform: translateX(-250%);
   }
   .slide {

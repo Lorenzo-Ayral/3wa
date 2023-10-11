@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {createPost} from "../../api/api.js";
 import styles from "../../css/components/CreatePostForm/CreatePostForm.module.css";
+import {FaFeatherAlt} from "react-icons/fa";
 const CreatePostForm = () => {
     const [content, setContent] = useState("");
     const [picture, setPicture] = useState(null);
@@ -25,8 +26,8 @@ const CreatePostForm = () => {
 
     return (
         <>
-            <h2>Quoi de neuf ?</h2>
             <form onSubmit={handleSubmit} className={styles.createPostForm}>
+                <h2>Liberate cogitationes vestras !</h2>
                 <div>
           <textarea
               value={content}
@@ -46,7 +47,7 @@ const CreatePostForm = () => {
                 {/*</div>*/}
                 <div>
                     <button type="submit" className={styles["submit-button"]}>
-                        Créer le post
+                        Déclamer ma prose <FaFeatherAlt/>
                     </button>
                 </div>
             </form>

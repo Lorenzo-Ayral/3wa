@@ -8,7 +8,7 @@ const ProfilePage = () => {
     return (
         <>
             <UserProfil/>
-            <PostList mode="UserPosts"/>
+            <PostList mode="UserPosts" postTitle="Vos brillantes réflexions"/>
             <Logout/>
         </>
     );

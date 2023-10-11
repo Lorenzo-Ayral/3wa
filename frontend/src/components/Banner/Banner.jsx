@@ -8,7 +8,7 @@ const Banner = () => {
     useEffect(() => {
         setTimeout(() => {
             setSlide(true);
-        }, 1000);
+        }, 700);
     }, []);
 
     return (

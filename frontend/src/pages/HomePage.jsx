@@ -8,7 +8,7 @@ export const HomePage = () => {
         <>
             <Banner/>
             <CreatePostForm/>
-            <PostList mode="AllPosts"/>
+            <PostList mode="AllPosts" postTitle="Les dernières réflexions de ceux qui sont sortis de la caverne"/>
         </>
     )
 }

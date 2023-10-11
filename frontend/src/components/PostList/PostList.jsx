@@ -14,8 +14,9 @@ import Modal from "../Modal/Modal.jsx";
 import {useSelector} from "react-redux";
 import styles from "../../css/components/PostList/PostList.module.css";
 import {FaTrashAlt} from "react-icons/fa";
+import {GiThink} from "react-icons/gi";
 
-function PostList({mode}) {
+function PostList({mode, postTitle}) {
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([])
     const [modalIsOpenDeletePost, setModalIsOpenDeletePost] = useState(false);
@@ -124,7 +125,7 @@ function PostList({mode}) {
 
     return (
         <div>
-            <h2>Posts</h2>
+            <h2 className={styles["second-title"]}>{postTitle}</h2>
             <ul className={styles["post-list"]}>
                 {posts.length > 0 ? (
                     posts.map((post) => (
@@ -136,16 +137,16 @@ function PostList({mode}) {
                                 </button>
                             )}
                             {/*<strong>Image :<img alt="" src={post.picture} /></strong>*/}
-                            <strong>{post.authorUsername}</strong>
+                            <strong style={{textAlign: "left"}}>{post.authorUsername}</strong> a philosophé :
+                            <p className={styles["content"]}>
+                                {post.content}
+                            </p>
+                            <em>
+                                le {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                locale: fr,
+                            })}
+                            </em>
                             <br/>
-                            {post.content}
-                            <br/>
-                            le {format(new Date(post.created_at), "d MMMM yyyy 'à' HH'h'mm", {
-                            locale: fr,
-                        })}
-                            <br/>
-
-                            <h4>Commentaires</h4>
                             <ul className={styles.comments}>
                                 {comments
                                     .filter((comment) => comment.postId === post.id)
@@ -154,13 +155,15 @@ function PostList({mode}) {
                                         .filter((comment) => comment.postId === post.id)
                                         .map((comment) => (
                                             <li key={comment.id} className={styles["comment-item"]}>
-                                                <strong>{comment.authorUsername}</strong> à répondu :
-                                                <br/>
-                                                {comment.content}
-                                                <br/>
-                                                le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
-                                                locale: fr,
-                                            })}
+                                                <strong>{comment.authorUsername}</strong> a scandé en retour :
+                                                <p className={styles["content"]}>
+                                                    {comment.content}
+                                                </p>
+                                                <em>
+                                                    le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                                    locale: fr,
+                                                })}
+                                                </em>
                                                 <br/>
                                                 {userId === comment.user && (
                                                     <button className={styles["delete-button"]}
@@ -171,16 +174,17 @@ function PostList({mode}) {
                                             </li>
                                         ))
                                 ) : (
-                                    <li>Aucun commentaire pour le moment</li>
+                                    <li>Nul n'a eu le courage de défier cette pensée</li>
                                 )}
                                 <button className={styles["submit-button"]}
-                                        onClick={() => openModalCommentPost(post.id)}>Ajouter un commentaire
+                                        onClick={() => openModalCommentPost(post.id)}>Partager votre
+                                    réflexion <GiThink/>
                                 </button>
                             </ul>
                         </li>
                     ))
                 ) : (
-                    <li>Aucun post pour le moment</li>
+                    <li style={{textAlign: "center"}}>Aucun post pour le moment</li>
                 )}
             </ul>
             {modalIsOpenDeletePost && (
