@@ -207,7 +207,7 @@ function PostList({mode, postTitle}) {
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             required
-                        />
+                        ></textarea>
                     }
                 />
             )}

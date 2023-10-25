@@ -34,7 +34,7 @@ const CreatePostForm = () => {
               onChange={(e) => setContent(e.target.value)}
               required
               className={styles.content}
-          />
+          ></textarea>
                 </div>
                 {/*<div>*/}
                 {/*    <label htmlFor="picture">Image :</label>*/}
