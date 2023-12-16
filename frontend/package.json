@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/dancing-script": "^5.0.13",
     "@fontsource/montserrat": "^5.0.12",
+    "@fontsource/playpen-sans": "^5.0.2",
     "@fontsource/satisfy": "^5.0.15",
     "@reduxjs/toolkit": "^1.9.5",
     "@vitejs/plugin-vue": "^4.4.0",

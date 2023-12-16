@@ -12,6 +12,7 @@ import Page404 from "./pages/Page404";
 import AdminPage from "./pages/AdminPage";
 import "@fontsource/montserrat";
 import "@fontsource/satisfy";
+import "@fontsource/playpen-sans";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
