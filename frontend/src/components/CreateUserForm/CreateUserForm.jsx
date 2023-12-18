@@ -19,6 +19,13 @@ function CreateUserForm() {
         const dateOfBirth = Moment(birthDate).format('DD/MM/YYYY');
         const data = {username, email, firstName, lastName, dateOfBirth, password};
 
+        const emailRegex = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+        if (!emailRegex.test(email)) {
+            alert('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert('Les mots de passe ne correspondent pas !');
             return;
@@ -45,7 +52,7 @@ function CreateUserForm() {
                 <div>
                     <label>
                         Adresse email :
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </label>
                 </div>
                 <div>
