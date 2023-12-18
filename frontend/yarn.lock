@@ -369,15 +369,15 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.48.0.tgz#642633964e217905436033a2bd08bf322849b7fb"
   integrity sha512-ZSjtmelB7IJfWD2Fvb7+Z+ChTIKWq6kjda95fLcQKNS5aheVHn4IkfgRQE3sIIzTcSLwLcLZUD9UBt+V7+h+Pw==
 
-"@fontsource/dancing-script@^5.0.13":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@fontsource/dancing-script/-/dancing-script-5.0.13.tgz#e1ae321946ac64391af1e816380c4332bb9b634a"
-  integrity sha512-Xt6JFy+sIA0e32PxticmXGrS8A0WEBsaexcLzdA2ee3f8GiLQx4G434b1RTDIA+AZZ/BS0BGszOHinWxJKSpZg==
-
 "@fontsource/montserrat@^5.0.12":
   version "5.0.12"
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-5.0.12.tgz#29f67495abd46d5c95845126d466cdb2a6f33278"
   integrity sha512-YwQ1+EQM9oXVSfJcLomjHIfVR6Xe7+2n/abx3JTYnf7EGNgR8Fe5FbV9uSuxtpmSgD2VbEkh6yV5r2CwAmSYkw==
+
+"@fontsource/playpen-sans@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/playpen-sans/-/playpen-sans-5.0.2.tgz#c3ffa402d1187bf8ff908674d794030a9442e125"
+  integrity sha512-9HvXxBuruYYd8vkX9Qd7OorrC0UsIuQGBJkfOAUYYLsTq3zf6u/PrF0h00tZwnWlVlMOXl14R79a43uHrvxZ9Q==
 
 "@fontsource/satisfy@^5.0.15":
   version "5.0.15"

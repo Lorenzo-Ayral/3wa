@@ -146,7 +146,6 @@ function PostList({mode, postTitle}) {
                                 locale: fr,
                             })}
                             </em>
-                            <br/>
                             <ul className={styles.comments}>
                                 {comments
                                     .filter((comment) => comment.postId === post.id)
@@ -159,12 +158,13 @@ function PostList({mode, postTitle}) {
                                                 <p className={styles["content"]}>
                                                     {comment.content}
                                                 </p>
-                                                <em>
-                                                    le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
-                                                    locale: fr,
-                                                })}
-                                                </em>
-                                                <br/>
+                                                <p>
+                                                    <em>
+                                                        le {format(new Date(comment.created_at), "d MMMM yyyy 'à' HH'h'mm", {
+                                                        locale: fr,
+                                                    })}
+                                                    </em>
+                                                </p>
                                                 {userId === comment.user && (
                                                     <button className={styles["delete-button"]}
                                                             onClick={() => openModalDeleteComment(comment.id)}>
@@ -207,7 +207,7 @@ function PostList({mode, postTitle}) {
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             required
-                        />
+                        ></textarea>
                     }
                 />
             )}

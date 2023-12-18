@@ -7,7 +7,6 @@ function ContactPage() {
             </p>
             <ul>
                 <li><strong>Email : lorenzo.ayral@gmail.com</strong></li>
-                <br/>
                 <li><strong>Profil GitHub : <a href="https://github.com/Lorenzo-Ayral">Lorenzo Ayral</a></strong></li>
             </ul>
         </div>

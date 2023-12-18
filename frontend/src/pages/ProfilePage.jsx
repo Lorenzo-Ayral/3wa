@@ -6,7 +6,7 @@ const ProfilePage = () => {
 
 
     return (
-        <div style={{height: "82vh"}}>
+        <div style={{height: "100%"}}>
             <UserProfil/>
             <PostList mode="UserPosts" postTitle="Vos brillantes réflexions"/>
             <Logout/>

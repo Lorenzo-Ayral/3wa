@@ -47,12 +47,15 @@ function UserList() {
             <ul>
                 {users && users.map((user) => (
                     <li key={user.id}>
-                        <strong>Nom d'utilisateur :</strong> {user.username}
-                        <br/>
-                        <strong>Nom complet :</strong> {user.first_name} {user.last_name}
-                        <br/>
-                        <strong>Email :</strong> {user.email}
-                        <br/>
+                        <p>
+                            <strong>Nom d'utilisateur :</strong> {user.username}
+                        </p>
+                        <p>
+                            <strong>Nom complet :</strong> {user.first_name} {user.last_name}
+                        </p>
+                        <p>
+                            <strong>Email :</strong> {user.email}
+                        </p>
                         <button onClick={() => openModal(user.id)}>Supprimer l'utilisateur</button>
                     </li>
                 ))}
