@@ -20,9 +20,15 @@ function CreateUserForm() {
         const data = {username, email, firstName, lastName, dateOfBirth, password};
 
         const emailRegex = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+        const passwordRegex = new RegExp('^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};":,.<>\\/?]).{8,}$');
 
         if (!emailRegex.test(email)) {
             alert('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
+            return;
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert('Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial');
             return;
         }
 
@@ -52,7 +58,7 @@ function CreateUserForm() {
                 <div>
                     <label>
                         Adresse email :
-                        <input type="" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </label>
                 </div>
                 <div>
