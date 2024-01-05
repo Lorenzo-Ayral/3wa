@@ -19,6 +19,19 @@ function CreateUserForm() {
         const dateOfBirth = Moment(birthDate).format('DD/MM/YYYY');
         const data = {username, email, firstName, lastName, dateOfBirth, password};
 
+        const emailRegex = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+        const passwordRegex = new RegExp('^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};":,.<>\\/?]).{8,}$');
+
+        if (!emailRegex.test(email)) {
+            alert('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
+            return;
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert('Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial');
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert('Les mots de passe ne correspondent pas !');
             return;
