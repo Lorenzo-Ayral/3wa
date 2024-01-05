@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use DateTime;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,7 +55,7 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $existingUserByUsername = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $data['username']]);
+        $existingUserByUsername = "SELECT * FROM users WHERE username = :username OR email = :email";
         $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
 
         if ($existingUserByUsername) {
@@ -64,6 +65,23 @@ class UserController extends AbstractController
         if ($existingUserByEmail) {
             return new Response('Email already exists', Response::HTTP_CONFLICT);
         }
+
+//        $sql = "SELECT * FROM users WHERE username = :username OR email = :email";
+//        $conn = $this->entityManager->getConnection();
+//        try {
+//            $result = $conn->executeQuery($sql, ['username' => $data['username'], 'email' => $data['email']]);
+//        } catch (Exception $e) {
+//            return new Response('Connection error', Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
+//        try {
+//            $existingUser = $result->fetchAssociative();
+//        } catch (Exception $e) {
+//            return new Response('Fetch error', Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
+//
+//        if ($existingUser) {
+//            return new Response('Username or Email already exists', Response::HTTP_CONFLICT);
+//        }
 
         $user = new User();
         $dateOfBirth = DateTime::createFromFormat('d/m/Y', $data['dateOfBirth']);
