@@ -54,6 +54,17 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        $existingUserByUsername = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $data['username']]);
+        $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+
+        if ($existingUserByUsername) {
+            return new Response('Username already exists', Response::HTTP_CONFLICT);
+        }
+
+        if ($existingUserByEmail) {
+            return new Response('Email already exists', Response::HTTP_CONFLICT);
+        }
+
         $user = new User();
         $dateOfBirth = DateTime::createFromFormat('d/m/Y', $data['dateOfBirth']);
 
