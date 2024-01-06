@@ -66,23 +66,6 @@ class UserController extends AbstractController
             return new Response('Email already exists', Response::HTTP_CONFLICT);
         }
 
-//        $sql = "SELECT * FROM users WHERE username = :username OR email = :email";
-//        $conn = $this->entityManager->getConnection();
-//        try {
-//            $result = $conn->executeQuery($sql, ['username' => $data['username'], 'email' => $data['email']]);
-//        } catch (Exception $e) {
-//            return new Response('Connection error', Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
-//        try {
-//            $existingUser = $result->fetchAssociative();
-//        } catch (Exception $e) {
-//            return new Response('Fetch error', Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
-//
-//        if ($existingUser) {
-//            return new Response('Username or Email already exists', Response::HTTP_CONFLICT);
-//        }
-
         $user = new User();
         $dateOfBirth = DateTime::createFromFormat('d/m/Y', $data['dateOfBirth']);
 
