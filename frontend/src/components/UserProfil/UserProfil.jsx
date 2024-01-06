@@ -104,22 +104,22 @@ function UserProfil() {
                     modalTitle="Mettre à jour mon profil"
                     modalBody={
                         <form className={styles["update-user-profile-form"]}>
-                            <label>Nouveau nom d'utilisateur:</label>
+                            <label>Nouveau nom d'utilisateur :</label>
                             <input type="text" name="username" value={newUserData.username} onChange={handleChange} />
 
-                            <label>Nouveau prénom:</label>
+                            <label>Nouveau prénom :</label>
                             <input type="text" name="firstName" value={newUserData.firstName} onChange={handleChange} />
 
-                            <label>Nouveau nom:</label>
+                            <label>Nouveau nom :</label>
                             <input type="text" name="lastName" value={newUserData.lastName} onChange={handleChange} />
 
-                            <label>Nouvel email:</label>
+                            <label>Nouvel email :</label>
                             <input type="email" name="email" value={newUserData.email} onChange={handleChange} />
 
-                            <label>Nouveau mot de passe:</label>
+                            <label>Nouveau mot de passe :</label>
                             <input type="password" name="password" value={newUserData.password} onChange={handleChange} />
 
-                            <label>Confirmer le nouveau mot de passe:</label>
+                            <label>Confirmer le nouveau mot de passe :</label>
                             <input type="password" name="passwordConfirm" value={newUserData.passwordConfirm} onChange={handleChange} />
                         </form>
                     }

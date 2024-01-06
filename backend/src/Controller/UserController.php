@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use DateTime;
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,17 +53,6 @@ class UserController extends AbstractController
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-
-//        $existingUserByUsername = "SELECT * FROM users WHERE username = :username OR email = :email";
-//        $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
-//
-//        if ($existingUserByUsername) {
-//            return new Response('Username already exists', Response::HTTP_CONFLICT);
-//        }
-//
-//        if ($existingUserByEmail) {
-//            return new Response('Email already exists', Response::HTTP_CONFLICT);
-//        }
 
         $rawSql = "SELECT * FROM user WHERE username = :username OR email = :email";
 
