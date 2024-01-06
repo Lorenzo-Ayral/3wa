@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {createUser} from "../../api/api.js";
 import Moment from 'moment';
 import {Navigate} from "react-router-dom";
-import styles from "../../css/components/Login/LoginForm.module.css";
+import styles from "../../css/components/CreateUserForm/CreateUserForm.module.css";
 
 function CreateUserForm() {
     const [username, setUsername] = useState('');
@@ -13,27 +13,28 @@ function CreateUserForm() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [redirectToLogin, setRedirectToLogin] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const dateOfBirth = Moment(birthDate).format('DD/MM/YYYY');
         const data = {username, email, firstName, lastName, dateOfBirth, password};
 
-        const emailRegex = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+        const emailRegex = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[a-zA-Z]{2,}$');
         const passwordRegex = new RegExp('^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};":,.<>\\/?]).{8,}$');
 
         if (!emailRegex.test(email)) {
-            alert('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
+            setErrorMessage('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
             return;
         }
 
         if (!passwordRegex.test(password)) {
-            alert('Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial');
+            setErrorMessage('Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial');
             return;
         }
 
         if (password !== confirmPassword) {
-            alert('Les mots de passe ne correspondent pas !');
+            setErrorMessage('Les mots de passe ne correspondent pas !');
             return;
         }
 
@@ -41,7 +42,11 @@ function CreateUserForm() {
             await createUser(data);
             setRedirectToLogin(true);
         } catch (error) {
-            console.error('Erreur lors de la création de l\'utilisateur:', error);
+            if (error.response && error.response.status === 409) {
+                setErrorMessage('Le nom d\'utilisateur ou l\'adresse email est déjà utilisé !');
+            } else {
+                console.error('Erreur lors de la création de l\'utilisateur:', error);
+            }
         }
     };
 
@@ -51,6 +56,7 @@ function CreateUserForm() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         Nom d'utilisateur :
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     </label>
@@ -93,6 +99,11 @@ function CreateUserForm() {
                                onChange={(e) => setConfirmPassword(e.target.value)}/>
                     </label>
                 </div>
+                {errorMessage &&
+                    <div>
+                        <p className={styles["error"]}>{errorMessage}</p>
+                    </div>
+                }
                 <button type="submit">Créer mon compte</button>
                 {redirectToLogin && <Navigate to="/login"/>}
             </form>
