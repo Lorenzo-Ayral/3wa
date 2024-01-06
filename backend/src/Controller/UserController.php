@@ -55,15 +55,26 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $existingUserByUsername = "SELECT * FROM users WHERE username = :username OR email = :email";
-        $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+//        $existingUserByUsername = "SELECT * FROM users WHERE username = :username OR email = :email";
+//        $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+//
+//        if ($existingUserByUsername) {
+//            return new Response('Username already exists', Response::HTTP_CONFLICT);
+//        }
+//
+//        if ($existingUserByEmail) {
+//            return new Response('Email already exists', Response::HTTP_CONFLICT);
+//        }
 
-        if ($existingUserByUsername) {
-            return new Response('Username already exists', Response::HTTP_CONFLICT);
-        }
+        $rawSql = "SELECT * FROM user WHERE username = :username OR email = :email";
 
-        if ($existingUserByEmail) {
-            return new Response('Email already exists', Response::HTTP_CONFLICT);
+        $stmt = $this->entityManager->getConnection()->prepare($rawSql);
+        $result = $stmt->executeQuery(['username' => $data['username'], 'email' => $data['email']]);
+
+        $checkIfUserAlreadyExist = $result->fetchOne();
+
+        if ($checkIfUserAlreadyExist) {
+            return new Response('Username or Email already exists', Response::HTTP_CONFLICT);
         }
 
         $user = new User();

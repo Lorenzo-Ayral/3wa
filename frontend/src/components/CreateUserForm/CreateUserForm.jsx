@@ -24,7 +24,7 @@ function CreateUserForm() {
         const passwordRegex = new RegExp('^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};":,.<>\\/?]).{8,}$');
 
         if (!emailRegex.test(email)) {
-            setErrorMessage('Veuillez entrer une adresse email valide (ex: nom@domaine.com)');
+            setErrorMessage('Veuillez entrer une adresse email valide');
             return;
         }
 
@@ -95,7 +95,6 @@ function CreateUserForm() {
                     <label>
                         Confirmer le mot de passe :
                         <input type="password" value={confirmPassword}
-
                                onChange={(e) => setConfirmPassword(e.target.value)}/>
                     </label>
                 </div>
