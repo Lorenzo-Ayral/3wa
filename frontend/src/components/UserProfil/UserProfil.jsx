@@ -59,7 +59,11 @@ function UserProfil() {
         };
 
         updateUser(userId, updatedUserData)
-            .then(() => {
+            .then((response) => {
+                console.log(response)
+                if (response && response.data && response.data.token) {
+                    localStorage.setItem("jwtToken", response.data.token);
+                }
                 setUserData(newUserData);
                 setModalIsOpen(false);
             })

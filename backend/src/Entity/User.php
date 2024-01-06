@@ -33,8 +33,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: false,
             write: true,
         ),
-        new Delete(),
-        new Patch()
+        new Patch(),
+        new Delete()
     ],
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],

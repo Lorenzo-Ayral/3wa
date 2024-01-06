@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,38 +85,38 @@ class UserController extends AbstractController
         return new Response('User created', Response::HTTP_CREATED);
     }
 
-//    #[Route('/api/users/{id}', name: 'update_user', methods: ['PATCH'])]
-//    public function update(Request $request, User $user): Response
-//    {
-//        $data = json_decode($request->getContent(), true);
-//        echo $data;
-//
-//        if (isset($data['username'])) {
-//            $user->setUsername($data['username']);
-//        }
-//
-//        if (isset($data['first_name'])) {
-//            $user->setFirstName($data['first_name']);
-//        }
-//
-//        if (isset($data['last_name'])) {
-//            $user->setLastName($data['last_name']);
-//        }
-//
-//        if (isset($data['email'])) {
-//            $user->setEmail($data['email']);
-//        }
-//
-//        if (isset($data['password'])) {
-//            $user->setPassword($data['password']);
-//        }
-//
-//        $user->setUpdatedAt(new \DateTimeImmutable());
-//
-//        $this->entityManager->persist($user);
-//        $this->entityManager->flush();
-//
-//        return $this->json($user, Response::HTTP_OK);
-//    }
+    #[Route('/api/users/{id}', name: 'update_user', methods: ['PATCH'])]
+    public function update(Request $request, User $user, JWTTokenManagerInterface $JWTManager): Response
+    {
+        $data = json_decode($request->getContent(), true);
 
+        if (isset($data['username'])) {
+            $user->setUsername($data['username']);
+        }
+
+        if (isset($data['first_name'])) {
+            $user->setFirstName($data['first_name']);
+        }
+
+        if (isset($data['last_name'])) {
+            $user->setLastName($data['last_name']);
+        }
+
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
+        }
+
+        if (isset($data['password'])) {
+            $user->setPassword($data['password']);
+        }
+
+        $user->setUpdatedAt(new \DateTimeImmutable());
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $token = $JWTManager->create($user);
+
+        return $this->json(['token' => $token], Response::HTTP_OK);
+    }
 }
