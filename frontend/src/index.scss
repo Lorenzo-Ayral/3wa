@@ -7,3 +7,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: $background-body;
 }
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+body > div {
+  flex-grow: 1;
+}
+
+footer {
+  flex-shrink: 0;
+}

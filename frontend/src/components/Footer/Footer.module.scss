@@ -16,3 +16,8 @@
 .navLink {
   @include navLink;
 }
+
+footer {
+  height: 60px;
+  flex-shrink: 0;
+}
