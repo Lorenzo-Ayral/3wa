@@ -27,6 +27,7 @@ function PostList({mode, postTitle}) {
     const [postIdToComment, setPostIdToComment] = useState(null);
     const [content, setContent] = useState('');
     const userId = "/api/users/" + useSelector((state) => state.auth.id);
+    const userRole = useSelector((state) => state.auth.role);
 
     useEffect(() => {
         if (mode === "UserPosts") {
@@ -72,7 +73,6 @@ function PostList({mode, postTitle}) {
             const formData = new FormData();
             formData.append('content', content);
             const response = await createComment(content, postIdToComment);
-            console.log('Post créé avec succès:', response);
             setContent('');
             setComments((prevComments) => [...prevComments, response]);
             setModalIsOpenCommentPost(false);
@@ -130,7 +130,7 @@ function PostList({mode, postTitle}) {
                 {posts.length > 0 ? (
                     posts.map((post) => (
                         <li key={post.id} className={styles["post-item"]}>
-                            {mode === "UserPosts" && (
+                            {mode === "UserPosts" || userRole === 'ROLE_ADMIN' && (
                                 <button className={styles["delete-button"]} onClick={() => openModalDeletePost(post.id)}
                                         style={{display: "block"}}>
                                     <FaTrashAlt/>
@@ -165,7 +165,7 @@ function PostList({mode, postTitle}) {
                                                     })}
                                                     </em>
                                                 </p>
-                                                {userId === comment.user && (
+                                                {userId === comment.user || userRole === 'ROLE_ADMIN' && (
                                                     <button className={styles["delete-button"]}
                                                             onClick={() => openModalDeleteComment(comment.id)}>
                                                         <FaTrashAlt/>
