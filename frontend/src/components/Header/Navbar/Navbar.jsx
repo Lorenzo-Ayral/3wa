@@ -18,11 +18,16 @@ const Navbar = () => {
                         </Link>
                     </li>
                     {isAuthenticated ? (
-                        <li className={styles.navItem}>
-                            <Link to="/profil" className={styles.navLink}>
-                                Profil
-                            </Link>
-                        </li>
+                        <>
+                            <li className={styles.navItem}>
+                                <Link to="/profil" className={styles.navLink}>
+                                    Profil
+                                </Link>
+                            </li>
+                            <li className={styles.navItem}>
+                                <Logout/>
+                            </li>
+                        </>
                     ) : (
                         <>
                             <li className={styles.navItem}>

@@ -3,7 +3,7 @@ import {logout} from "../../api/api.js";
 import {logoutSuccess} from "../../redux/auth/authSlice.js";
 import styles from "../../css/components/Logout/Logout.module.css";
 
-const LogoutForm = () => {
+const Logout = () => {
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
@@ -21,10 +21,8 @@ const LogoutForm = () => {
     };
 
     return (
-        <div>
-            <button onClick={handleLogout} className={styles["logout-button"]}>Déconnexion</button>
-        </div>
+            <button onClick={handleLogout}>Déconnexion</button>
     );
 };
 
-export default LogoutForm;
+export default Logout;
