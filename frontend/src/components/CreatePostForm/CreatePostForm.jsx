@@ -5,6 +5,7 @@ import {FaFeatherAlt} from "react-icons/fa";
 const CreatePostForm = () => {
     const [content, setContent] = useState("");
     const [picture, setPicture] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
 
     const handleSubmit = async (e) => {
@@ -14,8 +15,12 @@ const CreatePostForm = () => {
             setPicture(null);
             setContent("");
         } catch (error) {
-            console.error("Erreur:", error);
-            return alert("Erreur lors de la création du post:");
+            if (error.response && error.response.status === 409) {
+                console.log(error.response);
+                setErrorMessage('Vous avez déjà déclamé cette brillante pensée !');
+            } else {
+                console.error('Erreur lors de la création du post : ', error);
+            }
         }
     };
 
@@ -45,6 +50,11 @@ const CreatePostForm = () => {
                 {/*        id="picture"*/}
                 {/*    />*/}
                 {/*</div>*/}
+                {errorMessage &&
+                    <div>
+                        <p className={styles["error"]}>{errorMessage}</p>
+                    </div>
+                }
                 <div>
                     <button type="submit" className={styles["submit-button"]}>
                         Déclamer ma prose <FaFeatherAlt/>
