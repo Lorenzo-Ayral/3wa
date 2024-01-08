@@ -33,7 +33,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             read: false,
             write: true,
         ),
-        new Patch(),
+        new Patch(
+//            inputFormats: ['json' => ['application/merge-patch+json']]
+        ),
         new Delete()
     ],
     normalizationContext: ['groups' => ['read']],

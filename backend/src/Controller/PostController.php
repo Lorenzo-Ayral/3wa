@@ -47,6 +47,17 @@ class PostController extends AbstractController
             return $this->json(['message' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
+        $rawSql = "SELECT p.*, u.username FROM post p INNER JOIN user u ON p.author_id = u.id WHERE p.content = :content AND p.author_id = :author_id";
+
+        $stmt = $this->entityManager->getConnection()->prepare($rawSql);
+        $result = $stmt->executeQuery(['content' => $content, 'author_id' => $userId]);
+
+        $existingPost = $result->fetchOne();
+
+        if ($existingPost) {
+            return $this->json(['message' => 'Ce post existe déjà.'], Response::HTTP_CONFLICT);
+        }
+
         $post = new Post();
         $post->setAuthor($author);
         $post->setContent($content);
