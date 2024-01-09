@@ -1,6 +1,14 @@
 @import "../../mixins";
 
-.logout-button {
-  @include delete-button;
-  margin-top : 30px;
+.logout {
+  @include nav;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  &:hover {
+    cursor: pointer;
+  }
 }

@@ -1,7 +1,9 @@
 import {useDispatch} from "react-redux";
 import {logout} from "../../api/api.js";
 import {logoutSuccess} from "../../redux/auth/authSlice.js";
-import styles from "../../css/components/Logout/Logout.module.css";
+import styles from "../../css/components/Header/Navbar/Navbar.module.css";
+import logoutStyles from "../../css/components/Logout/Logout.module.css";
+
 
 const Logout = () => {
     const dispatch = useDispatch();
@@ -21,7 +23,7 @@ const Logout = () => {
     };
 
     return (
-            <button onClick={handleLogout}>Déconnexion</button>
+            <button onClick={handleLogout} className={`${styles.navLink} ${logoutStyles.logout}`}>Déconnexion</button>
     );
 };
 

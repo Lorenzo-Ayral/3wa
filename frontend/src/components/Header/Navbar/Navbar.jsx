@@ -17,6 +17,13 @@ const Navbar = () => {
                             <img src={logo} alt="RésoPhilo" style={{width: "70px"}}/>
                         </Link>
                     </li>
+                    {isAdmin === "ROLE_ADMIN" && (
+                        <li className={styles.navItem}>
+                            <Link to="/admin" className={styles.navLink}>
+                                Admin
+                            </Link>
+                        </li>
+                    )}
                     {isAuthenticated ? (
                         <>
                             <li className={styles.navItem}>
@@ -41,13 +48,6 @@ const Navbar = () => {
                                 </Link>
                             </li>
                         </>
-                    )}
-                    {isAdmin === "ROLE_ADMIN" && (
-                        <li className={styles.navItem}>
-                            <Link to="/admin" className={styles.navLink}>
-                                Admin
-                            </Link>
-                        </li>
                     )}
                 </ul>
             </nav>
