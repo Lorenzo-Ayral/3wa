@@ -9,7 +9,6 @@ const ProfilePage = () => {
         <div style={{height: "100%"}}>
             <UserProfil/>
             <PostList mode="UserPosts" postTitle="Vos brillantes réflexions"/>
-            <Logout/>
         </div>
     );
 };
