@@ -56,7 +56,7 @@ function CreateUserForm() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>
-                        {/* eslint-disable-next-line react/no-unescaped-entities */}
+                        { }
                         Nom d'utilisateur :
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     </label>

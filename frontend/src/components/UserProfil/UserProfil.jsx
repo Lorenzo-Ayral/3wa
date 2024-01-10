@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
-import { getProfile, updateUser } from "../../api/api.js";
+import {getProfile, updateUser} from "../../api/api.js";
 import Modal from "../Modal/Modal.jsx";
 import styles from "../../css/components/UserProfil/UserProfil.module.css";
 import {GiWaxTablet} from "react-icons/gi";
@@ -55,7 +55,7 @@ function UserProfil() {
             last_name: newUserData.lastName,
             email: newUserData.email,
             password: newUserData.password,
-            updated_at : new Date(),
+            updated_at: new Date(),
         };
 
         updateUser(userId, updatedUserData)
@@ -73,7 +73,7 @@ function UserProfil() {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setNewUserData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -108,23 +108,29 @@ function UserProfil() {
                     modalTitle="Mettre à jour mon profil"
                     modalBody={
                         <form className={styles["update-user-profile-form"]}>
-                            <label>Nouveau nom d'utilisateur :</label>
-                            <input type="text" name="username" value={newUserData.username} onChange={handleChange} />
+                            <label htmlFor="username">Nouveau nom d'utilisateur :</label>
+                            <input type="text" id="username" name="username" value={newUserData.username}
+                                   onChange={handleChange}/>
 
-                            <label>Nouveau prénom :</label>
-                            <input type="text" name="firstName" value={newUserData.firstName} onChange={handleChange} />
+                            <label htmlFor="firstName">Nouveau prénom :</label>
+                            <input type="text" id="firstName" name="firstName" value={newUserData.firstName}
+                                   onChange={handleChange}/>
 
-                            <label>Nouveau nom :</label>
-                            <input type="text" name="lastName" value={newUserData.lastName} onChange={handleChange} />
+                            <label htmlFor="lastName">Nouveau nom :</label>
+                            <input type="text" id="lastName" name="lastName" value={newUserData.lastName}
+                                   onChange={handleChange}/>
 
-                            <label>Nouvel email :</label>
-                            <input type="email" name="email" value={newUserData.email} onChange={handleChange} />
+                            <label htmlFor="email">Nouvel email :</label>
+                            <input type="email" id="email" name="email" value={newUserData.email}
+                                   onChange={handleChange}/>
 
-                            <label>Nouveau mot de passe :</label>
-                            <input type="password" name="password" value={newUserData.password} onChange={handleChange} />
+                            <label htmlFor="password">Nouveau mot de passe :</label>
+                            <input type="password" id="password" name="password" value={newUserData.password}
+                                   onChange={handleChange}/>
 
-                            <label>Confirmer le nouveau mot de passe :</label>
-                            <input type="password" name="passwordConfirm" value={newUserData.passwordConfirm} onChange={handleChange} />
+                            <label htmlFor="passwordConfirm">Confirmer le nouveau mot de passe :</label>
+                            <input type="password" id="passwordConfirm" name="passwordConfirm"
+                                   value={newUserData.passwordConfirm} onChange={handleChange}/>
                         </form>
                     }
                 />
