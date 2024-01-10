@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -63,10 +64,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['read', 'write'])]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/",
+        message: "Veuillez entrer une adresse email valide"
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['write', 'read'])]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[!@#$%^&*()_+\-=\[\]{};':,.<>\/?]).{8,}$/",
+        message: "Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial"
+    )]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
