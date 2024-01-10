@@ -1,4 +1,3 @@
-import {useState} from "react";
 import NavbarMobile from "./NavbarMobile/NavbarMobile.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
 
