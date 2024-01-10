@@ -17,7 +17,7 @@ const NavbarMobile = () => {
     return (
         <header>
             <nav>
-                <button className={styles.navBurgerButton} onClick={handleOpenMenu}>
+                <button aria-label="Burger menu" className={styles.navBurgerButton} onClick={handleOpenMenu}>
                     <GiHamburgerMenu/>
                 </button>
                 <ul className={styles.navListMobile} style={{display: isOpen ? "block" : "none"}}>
