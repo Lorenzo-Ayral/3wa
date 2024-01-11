@@ -124,12 +124,12 @@ function PostList({mode, postTitle}) {
     }
 
     return (
-        <div>
+        <>
             <h2 className={styles["second-title"]}>{postTitle}</h2>
-            <ul className={styles["post-list"]}>
+            <main className={styles["post-list"]}>
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <li key={post.id} className={styles["post-item"]}>
+                        <article key={post.id} className={styles["post-item"]}>
                             {mode === "UserPosts" || userRole === 'ROLE_ADMIN' && (
                                 <button aria-label="Delete button" className={styles["delete-button"]}
                                         onClick={() => openModalDeletePost(post.id)}
@@ -183,12 +183,12 @@ function PostList({mode, postTitle}) {
                                     réflexion <GiThink/>
                                 </button>
                             </ul>
-                        </li>
+                        </article>
                     ))
                 ) : (
                     <li style={{textAlign: "center"}}>Aucun post pour le moment</li>
                 )}
-            </ul>
+            </main>
             {modalIsOpenDeletePost && (
                 <Modal
                     modalIsOpen={modalIsOpenDeletePost}
@@ -222,7 +222,7 @@ function PostList({mode, postTitle}) {
                     modalBody="Êtes-vous sûr de vouloir supprimer ce commentaire ?"
                 />
             )}
-        </div>
+        </>
     );
 }
 

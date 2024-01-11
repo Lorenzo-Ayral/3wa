@@ -22,7 +22,7 @@
 
     &:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: $background-button;
     }
   }
 
@@ -36,7 +36,7 @@
       display: none;
 
       & + label {
-        background-color: #007bff;
+        background-color: $background-button;
         color: #fff;
         padding: 10px 20px;
         border-radius: 4px;

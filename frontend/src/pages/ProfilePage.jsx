@@ -5,7 +5,7 @@ const ProfilePage = () => {
 
 
     return (
-        <div style={{height: "100%"}}>
+        <div style={{minHeight: "85%"}}>
             <UserProfil/>
             <PostList mode="UserPosts" postTitle="Vos brillantes réflexions"/>
         </div>
