@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use App\Controller\UserController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,9 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             read: false,
             write: true,
         ),
-        new Patch(
-//            inputFormats: ['json' => ['application/merge-patch+json']]
-        ),
+        new Put(),
         new Delete()
     ],
     normalizationContext: ['groups' => ['read']],

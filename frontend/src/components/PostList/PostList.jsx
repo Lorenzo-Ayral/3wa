@@ -130,7 +130,7 @@ function PostList({mode, postTitle}) {
                 {posts.length > 0 ? (
                     posts.map((post) => (
                         <article key={post.id} className={styles["post-item"]}>
-                            {mode === "UserPosts" || userRole === 'ROLE_ADMIN' && (
+                            {((mode === "UserPosts") || userRole === 'ROLE_ADMIN') && (
                                 <button aria-label="Delete button" className={styles["delete-button"]}
                                         onClick={() => openModalDeletePost(post.id)}
                                         style={{display: "block"}}>

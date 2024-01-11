@@ -82,7 +82,7 @@ class UserController extends AbstractController
         return new Response('User created', Response::HTTP_CREATED);
     }
 
-    #[Route('/api/users/{id}', name: 'update_user', methods: ['PATCH'])]
+    #[Route('/api/users/{id}', name: 'update_user', methods: ['PUT'])]
     public function update(Request $request, User $user, JWTTokenManagerInterface $JWTManager): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -110,10 +110,19 @@ class UserController extends AbstractController
         $user->setUpdatedAt(new \DateTimeImmutable());
 
         $this->entityManager->persist($user);
+        $uow = $this->entityManager->getUnitOfWork();
+        $uow->computeChangeSets();
+        $changeset = $uow->getEntityChangeSet($user);
         $this->entityManager->flush();
 
         $token = $JWTManager->create($user);
 
-        return $this->json(['token' => $token], Response::HTTP_OK);
+        $jsonResponse = $this->serializer->serialize($user, 'json', [
+            'groups' => ['read'],
+        ]);
+
+        return new Response($jsonResponse, Response::HTTP_OK, [
+            'Content-Type' => 'application/json',
+        ]);
     }
 }
