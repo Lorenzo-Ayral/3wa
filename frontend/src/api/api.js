@@ -2,7 +2,7 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode";
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'http://192.168.1.38:8000/api/',
 });
 
 api.interceptors.request.use(
