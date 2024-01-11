@@ -68,9 +68,9 @@ export const deleteUser = (userId) => {
 }
 
 export const updateUser = (userId, updatedUserData) => {
-    return api.patch('users/' + userId, updatedUserData, {
+    return api.put('users/' + userId, updatedUserData, {
         headers: {
-            'Content-Type': 'application/merge-patch+json',
+            'Content-Type': 'application/json',
         },
     })
         .then((response) => response.data)
