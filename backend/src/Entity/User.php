@@ -17,12 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     operations: [
         new Get(
             controller: UserController::class,
+            normalizationContext: ['groups' => ['read']],
             read: true,
         ),
         new GetCollection(),
@@ -63,10 +65,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['read', 'write'])]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/",
+        message: "Veuillez entrer une adresse email valide"
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['write', 'read'])]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[!@#$%^&*()_+\-=\[\]{};':,.<>\/?]).{8,}$/",
+        message: "Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial"
+    )]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -93,11 +103,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
-    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Friendship::class, orphanRemoval: true)]
-    private Collection $sender;
-
-    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Friendship::class, orphanRemoval: true)]
-    private Collection $receiver;
+//    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Friendship::class, orphanRemoval: true)]
+//    private Collection $sender;
+//
+//    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Friendship::class, orphanRemoval: true)]
+//    private Collection $receiver;
 
     #[ORM\Column]
     private ?array $roles = null;
@@ -243,7 +253,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removePost(Post $post): static
     {
         if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
             if ($post->getAuthor() === $this) {
                 $post->setAuthor(null);
             }
@@ -273,7 +282,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
             }

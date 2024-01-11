@@ -124,14 +124,15 @@ function PostList({mode, postTitle}) {
     }
 
     return (
-        <div>
+        <>
             <h2 className={styles["second-title"]}>{postTitle}</h2>
-            <ul className={styles["post-list"]}>
+            <main className={styles["post-list"]}>
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <li key={post.id} className={styles["post-item"]}>
+                        <article key={post.id} className={styles["post-item"]}>
                             {mode === "UserPosts" || userRole === 'ROLE_ADMIN' && (
-                                <button className={styles["delete-button"]} onClick={() => openModalDeletePost(post.id)}
+                                <button aria-label="Delete button" className={styles["delete-button"]}
+                                        onClick={() => openModalDeletePost(post.id)}
                                         style={{display: "block"}}>
                                     <FaTrashAlt/>
                                 </button>
@@ -154,7 +155,14 @@ function PostList({mode, postTitle}) {
                                         .filter((comment) => comment.postId === post.id)
                                         .map((comment) => (
                                             <li key={comment.id} className={styles["comment-item"]}>
-                                                <strong>{comment.authorUsername}</strong> a scandé en retour :
+                                                {userId === comment.user || userRole === 'ROLE_ADMIN' && (
+                                                    <button aria-label="Delete button"
+                                                            className={styles["delete-button"]}
+                                                            onClick={() => openModalDeleteComment(comment.id)}>
+                                                        <FaTrashAlt/>
+                                                    </button>
+                                                )}
+                                                <p><strong>{comment.authorUsername}</strong> a scandé en retour :</p>
                                                 <p className={styles["content"]}>
                                                     {comment.content}
                                                 </p>
@@ -165,12 +173,6 @@ function PostList({mode, postTitle}) {
                                                     })}
                                                     </em>
                                                 </p>
-                                                {userId === comment.user || userRole === 'ROLE_ADMIN' && (
-                                                    <button className={styles["delete-button"]}
-                                                            onClick={() => openModalDeleteComment(comment.id)}>
-                                                        <FaTrashAlt/>
-                                                    </button>
-                                                )}
                                             </li>
                                         ))
                                 ) : (
@@ -181,12 +183,12 @@ function PostList({mode, postTitle}) {
                                     réflexion <GiThink/>
                                 </button>
                             </ul>
-                        </li>
+                        </article>
                     ))
                 ) : (
                     <li style={{textAlign: "center"}}>Aucun post pour le moment</li>
                 )}
-            </ul>
+            </main>
             {modalIsOpenDeletePost && (
                 <Modal
                     modalIsOpen={modalIsOpenDeletePost}
@@ -220,7 +222,7 @@ function PostList({mode, postTitle}) {
                     modalBody="Êtes-vous sûr de vouloir supprimer ce commentaire ?"
                 />
             )}
-        </div>
+        </>
     );
 }
 

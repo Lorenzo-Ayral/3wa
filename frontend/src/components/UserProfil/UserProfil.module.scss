@@ -20,8 +20,9 @@
   }
 
   .update-button {
-    background-color: #007bff;
+    background-color: $background-button;
     color: #fff;
+    font-weight: bold;
     border: none;
     padding: 10px 20px;
     font-size: 18px;
@@ -53,7 +54,7 @@
   }
 
   button {
-    background-color: #007bff;
+    background-color: $background-button;
     color: #fff;
     border: none;
     padding: 10px 20px;

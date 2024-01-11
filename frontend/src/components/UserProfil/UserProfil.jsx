@@ -82,7 +82,7 @@ function UserProfil() {
 
     return (
         <>
-            <div className={styles["user-profile"]}>
+            <section className={styles["user-profile"]}>
                 <h2>Profil de l'utilisateur</h2>
                 {/*<img*/}
                 {/*    src={userData.profilePicture}*/}
@@ -99,7 +99,7 @@ function UserProfil() {
                 >
                     Mettre à jour mon profil <GiWaxTablet/>
                 </button>
-            </div>
+            </section>
             {modalIsOpen && (
                 <Modal
                     modalIsOpen={modalIsOpen}

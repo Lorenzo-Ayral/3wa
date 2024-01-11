@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
@@ -51,20 +52,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/api/create/users', name: 'create_user', methods: ['POST'])]
-    public function create(Request $request): Response
+    public function create(Request $request, ValidatorInterface $validator): Response
     {
         $data = json_decode($request->getContent(), true);
-
-        $rawSql = "SELECT * FROM user WHERE username = :username OR email = :email";
-
-        $stmt = $this->entityManager->getConnection()->prepare($rawSql);
-        $result = $stmt->executeQuery(['username' => $data['username'], 'email' => $data['email']]);
-
-        $checkIfUserAlreadyExist = $result->fetchOne();
-
-        if ($checkIfUserAlreadyExist) {
-            return new Response('Username or Email already exists', Response::HTTP_CONFLICT);
-        }
 
         $user = new User();
         $dateOfBirth = DateTime::createFromFormat('d/m/Y', $data['dateOfBirth']);
@@ -75,9 +65,16 @@ class UserController extends AbstractController
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setDateOfBirth($dateOfBirth);
-//        $user->setProfilePicture($data['profilePicture']);
         $user->setCreatedAt(new \DateTimeImmutable());
         $user->setRoles(['ROLE_USER']);
+
+        $errors = $validator->validate($user, null, ['Default', 'write']);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return new Response($errorsString, Response::HTTP_BAD_REQUEST);
+        }
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
