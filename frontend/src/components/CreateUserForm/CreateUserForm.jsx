@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {createUser} from "../../api/api.js";
 import Moment from 'moment';
 import {Navigate} from "react-router-dom";
@@ -14,6 +14,15 @@ function CreateUserForm() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [redirectToLogin, setRedirectToLogin] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [maxDate, setMaxDate] = useState('');
+
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear() - 13;
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        setMaxDate(`${year}-${month}-${day}`);
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -82,7 +91,8 @@ function CreateUserForm() {
                 <div>
                     <label>
                         Date de naissance :
-                        <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}/>
+                        <input type="date" value={birthDate} max={maxDate}
+                               onChange={(e) => setBirthDate(e.target.value)}/>
                     </label>
                 </div>
                 <div>

@@ -3,6 +3,7 @@ import styles from "../../../css/components/Header/NavbarMobile/NavbarMobile.mod
 import {useSelector} from "react-redux";
 import {useState} from "react";
 import {GiHamburgerMenu} from "react-icons/gi";
+import Logout from "../../Logout/Logout.jsx";
 
 const NavbarMobile = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -27,11 +28,16 @@ const NavbarMobile = () => {
                         </Link>
                     </li>
                     {isAuthenticated ? (
-                        <li className={styles.navItemMobile}>
-                            <Link to="/profil" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
-                                Profil
-                            </Link>
-                        </li>
+                        <>
+                            <li className={styles.navItemMobile}>
+                                <Link to="/profil" className={styles.navLinkMobile} onClick={() => setIsOpen(false)}>
+                                    Profil
+                                </Link>
+                            </li>
+                            <li className={styles.navItemMobile}>
+                                <Logout/>
+                            </li>
+                        </>
                     ) : (
                         <>
                             <li className={styles.navItemMobile}>
