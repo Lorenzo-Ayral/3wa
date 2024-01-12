@@ -9,10 +9,11 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
+use Symfony\Component\Mailer\MailerInterface;
 class UserController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -52,7 +53,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/api/create/users', name: 'create_user', methods: ['POST'])]
-    public function create(Request $request, ValidatorInterface $validator): Response
+    public function create(Request $request, ValidatorInterface $validator, MailerInterface $mailer): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -94,6 +95,19 @@ class UserController extends AbstractController
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $email = (new Email())
+            ->from('noreply@yourwebsite.com')
+            ->to($user->getEmail())
+            ->subject('Welcome to our website')
+            ->text(
+                "Bonjour " . $user->getFirstName() . ",\n\n" .
+                "Merci pour votre inscription au meilleur réseau philosique depuis Platon\n\n" .
+                "Bonne réflexion,\n" .
+                "Team Aristote"
+            );
+
+        $mailer->send($email);
 
         return new Response('User created', Response::HTTP_CREATED);
     }

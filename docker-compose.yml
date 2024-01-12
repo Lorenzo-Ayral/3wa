@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-#      - "8001:8001"
+    #      - "8001:8001"
     depends_on:
       - database
     volumes:
@@ -38,7 +38,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db
-#      MYSQL_USER: root
+      #      MYSQL_USER: root
       MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
@@ -63,8 +63,10 @@ services:
     logging:
       driver: 'none'
     ports:
-      - "1030:1030" # smtp server
+      - "1025:1025" # smtp server
       - "8025:8025" # web ui
+    networks:
+      - app
 
   sass-compiler:
     container_name: sass-compiler
