@@ -59,6 +59,12 @@ class UserController extends AbstractController
         $user = new User();
         $dateOfBirth = DateTime::createFromFormat('d/m/Y', $data['dateOfBirth']);
 
+        $date13YearsAgo = (new DateTime())->modify('-13 years');
+
+        if ($dateOfBirth > $date13YearsAgo) {
+            return new Response('User must be at least 13 years old', Response::HTTP_BAD_REQUEST);
+        }
+
         $user->setUsername($data['username']);
         $user->setPassword($data['password']);
         $user->setEmail($data['email']);
