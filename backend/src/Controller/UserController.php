@@ -65,6 +65,16 @@ class UserController extends AbstractController
             return new Response('User must be at least 13 years old', Response::HTTP_BAD_REQUEST);
         }
 
+        $rawSql = "SELECT * FROM user WHERE username = :username OR email = :email";
+
+        $stmt = $this->entityManager->getConnection()->prepare($rawSql);
+        $result = $stmt->executeQuery(['username' => $data['username'], 'email' => $data['email']]);
+        $checkIfUserAlreadyExist = $result->fetchOne();
+
+        if ($checkIfUserAlreadyExist) {
+            return new Response('Username or Email already exists', Response::HTTP_CONFLICT);
+        }
+
         $user->setUsername($data['username']);
         $user->setPassword($data['password']);
         $user->setEmail($data['email']);
@@ -77,7 +87,7 @@ class UserController extends AbstractController
         $errors = $validator->validate($user, null, ['Default', 'write']);
 
         if (count($errors) > 0) {
-            $errorsString = (string) $errors;
+            $errorsString = (string)$errors;
 
             return new Response($errorsString, Response::HTTP_BAD_REQUEST);
         }
