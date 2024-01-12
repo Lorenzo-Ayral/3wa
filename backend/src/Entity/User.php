@@ -66,7 +66,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read', 'write'])]
     #[Assert\Regex(
         pattern: "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/",
-        message: "Veuillez entrer une adresse email valide"
+        message: "Veuillez entrer une adresse email valide",
+        match: true
     )]
     private ?string $email = null;
 
@@ -74,7 +75,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['write', 'read'])]
     #[Assert\Regex(
         pattern: "/^(?=.*[!@#$%^&*()_+\-=\[\]{};':,.<>\/?]).{8,}$/",
-        message: "Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial"
+        message: "Le mot de passe doit contenir au moins 8 caractères dont 1 caractère spécial",
+        match: true
     )]
     private ?string $password = null;
 
