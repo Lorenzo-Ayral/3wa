@@ -1,0 +1,4 @@
+api_platform:
+  patch_formats:
+    json: ['application/merge-patch+json']
+    jsonapi: ['application/vnd.api+json']

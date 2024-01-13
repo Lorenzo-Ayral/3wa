@@ -37,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             write: true,
         ),
         new Put(),
+        new Patch(),
         new Delete()
     ],
     normalizationContext: ['groups' => ['read']],

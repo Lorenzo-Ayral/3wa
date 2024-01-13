@@ -2,8 +2,6 @@ api_platform:
     resource: .
     type: api_platform
     prefix: /api
-    patch_formats:
-        json: [ 'application/merge-patch+json' ]
 #    swagger:
 #        version: [3]
 #    swagger:
