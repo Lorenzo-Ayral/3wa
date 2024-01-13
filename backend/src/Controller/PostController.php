@@ -86,10 +86,6 @@ class PostController extends AbstractController
         return $this->json($post, Response::HTTP_CREATED);
     }
 
-
-
-
-
     #[Route('/api/posts', name: 'get_posts', methods: ['GET'])]
     public function index(): Response
     {

@@ -97,14 +97,14 @@ class UserController extends AbstractController
         $this->entityManager->flush();
 
         $email = (new Email())
-            ->from('noreply@yourwebsite.com')
+            ->from('noreply@rezophilo.com')
             ->to($user->getEmail())
-            ->subject('Welcome to our website')
+            ->subject('Bienvenue sur RézoPhilo')
             ->text(
                 "Bonjour " . $user->getFirstName() . ",\n\n" .
                 "Merci pour votre inscription au meilleur réseau philosique depuis Platon\n\n" .
                 "Bonne réflexion,\n" .
-                "Team Aristote"
+                "L'équipe RézoPhilo"
             );
 
         $mailer->send($email);
